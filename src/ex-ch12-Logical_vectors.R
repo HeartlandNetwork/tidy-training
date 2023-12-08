@@ -177,10 +177,19 @@ if_else(x < 0, abs(x), x)
 flights$month
 flights$day
 
-case_when(
-  (flights$month == 12) & (flights$day == 25) ~ "-ve", # Christmas
-  x > 0 ~ "+ve", # New Year's Day
-  .default = NA 4th of July
-)
+f <- flights |>
+  mutate( holiday = case_when(
+    (flights$month == 12) & (flights$day == 25) ~ "Christmas",
+    (flights$month == 1) & (flights$day == 1) ~ "New Year's",
+    (flights$month == 7) & (flights$day == 4) ~ "4th of July"
+  )) |>
+  select(carrier, flight, holiday, year, month, day) 
+
+g <- f |> filter(!is.na(holiday)) 
+
+view(g)
+
+
+
 
 
