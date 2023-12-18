@@ -60,12 +60,9 @@ flights |>
 flights |> count(tailnum, wt = distance)
 
 
-# 13.3.1 Exercises
-How can you use count() to count the number rows with a missing value for a given variable?
-  Expand the following calls to count() to instead use group_by(), summarize(), and arrange():
-  
-  
-  
+
+# 13.4 Numeric transformations -------------------------------------------------
+
 
 
 
