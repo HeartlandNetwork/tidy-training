@@ -63,6 +63,44 @@ flights |> count(tailnum, wt = distance)
 
 # 13.4 Numeric transformations -------------------------------------------------
 
+# 13.4.1  Arithmetic and recycling rules ---------------------------------------
+
+x <- c(1, 2, 10, 20)
+
+x / 5
+
+# is shorthand for
+
+x / c(5, 5, 5, 5)
+
+# The longer vector is recycled over the shorter one. Note the warning...
+
+x
+
+x * c(1, 2)
+
+x * c(1, 2, 3)
+
+# Applied to logical comparisons 
+
+# Trying to find flights in January and February
+# This doesn't work...
+
+flights |> 
+  filter(month == c(1, 2)) |>
+  view()
+
+# Because of the recycling rules it finds flights in odd numbered rows that 
+# departed in January and flights in even numbered rows that departed in 
+# February. And unfortunately there’s no warning because flights has an 
+# even number of rows.
+
+flights |> 
+  filter(month < 3) |>
+  view()
+
+# 13.4.2 Minimum and maximum ---------------------------------------------------
+
 
 
 
