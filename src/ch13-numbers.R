@@ -101,9 +101,43 @@ flights |>
 
 # 13.4.2 Minimum and maximum ---------------------------------------------------
 
+df <- tribble(
+  ~x, ~y,
+  1,  3,
+  5,  2,
+  7, NA,
+)
 
+# working with pairs
 
+df |> 
+  mutate(
+    min = pmin(x, y, na.rm = TRUE),
+    max = pmax(x, y, na.rm = TRUE)
+  )
 
+# working across all values
+
+df |> 
+  mutate(
+    min = min(x, y, na.rm = TRUE),
+    max = max(x, y, na.rm = TRUE)
+  )
+
+# 13.4.3 Modular arithmetic ------------------------------------------------------
+  
+# %/% does integer division and %% computes the remainder
+
+1:10 %/% 3
+
+1:10 %% 3
+
+flights |> 
+  mutate(
+    hour = sched_dep_time %/% 100,
+    minute = sched_dep_time %% 100,
+    .keep = "used"
+  )
 
 
 
