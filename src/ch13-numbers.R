@@ -140,11 +140,65 @@ flights |>
   )
 
 
+flights |> 
+  group_by(hour = sched_dep_time %/% 100) |> 
+  summarize(prop_cancelled = mean(is.na(dep_time)), n = n()) |> 
+  filter(hour > 1) |> 
+  ggplot(aes(x = hour, y = prop_cancelled)) +
+  geom_line(color = "grey50") + 
+  geom_point(aes(size = n))
 
 
+# 13.4.4 Logarithms ------------------------------------------------------------
 
+# log(), log2(), log10()
 
+# inverse: exp(), 2^, 10^
+ 
+# 13.4.5 Rounding --------------------------------------------------------------
 
+round(123.456)
+
+round(123.456, 2)  # two digits
+
+round(123.456, 1)  # one digit#> [1] 123.5
+
+round(123.456, -1) # round to nearest ten
+
+round(123.456, -2) # round to nearest hundred
+
+# round() uses what’s known as “round half to even”
+
+round(c(1.5, 2.5))
+
+# round() is paired with floor() which always rounds down and ceiling() which 
+# always rounds up:
+
+x <- 123.456
+
+floor(x)
+
+ceiling(x)
+
+# Round to nearest multiple of 4
+
+round(x / 4) * 4
+
+# Round to nearest 0.25
+
+round(x / 0.25) * 0.25
+
+# 13.4.6 Cutting numbers into ranges - Use cut() to break up (aka bin) a 
+# numeric vector into discrete buckets:
+
+x <- c(1, 2, 5, 10, 15, 20)
+cut(x, breaks = c(0, 5, 10, 15, 20))
+
+# The breaks don’t need to be evenly spaced:
+
+cut(x, breaks = c(0, 5, 10, 100))
+
+# Using labels and breaks
 
 
 
