@@ -189,7 +189,7 @@ round(x / 4) * 4
 round(x / 0.25) * 0.25
 
 # 13.4.6 Cutting numbers into ranges - Use cut() to break up (aka bin) a 
-# numeric vector into discrete buckets:
+# numeric vector into discrete buckets: ----------------------------------------
 
 x <- c(1, 2, 5, 10, 15, 20)
 cut(x, breaks = c(0, 5, 10, 15, 20))
@@ -198,7 +198,91 @@ cut(x, breaks = c(0, 5, 10, 15, 20))
 
 cut(x, breaks = c(0, 5, 10, 100))
 
-# Using labels and breaks
+# You can optionally supply your own labels.
+
+cut(x, 
+    breaks = c(0, 5, 10, 15, 20), 
+    labels = c("sm", "md", "lg", "xl")
+)
+
+# Any values outside of the range of the breaks will become NA:
+
+y <- c(NA, -10, 5, 10, 30)
+cut(y, breaks = c(0, 5, 10, 15, 20))
+
+# 13.4.7 Cumulative and rolling aggregates -------------------------------------
+
+x <- 1:10
+cumsum(x)
+
+cumprod(x)
+
+cummin(x)
+
+cummax(x)
+
+# 13.4.8 Exercises -------------------------------------------------------------
+
+# 1. Explain in words what each line of the code used to generate Figure 13.1 does.
+
+flights |> 
+  # group by hour which is extracted using integer division
+  group_by(hour = sched_dep_time %/% 100) |> 
+  # calculate "proportion cancelled" by dividing no. cancelled by sample size
+  summarize(prop_cancelled = mean(is.na(dep_time)), n = n()) |> 
+  # set the range from 1 to max which is 24
+  filter(hour > 1) |> 
+  # plot the proportion cancelled against the hour
+  ggplot(aes(x = hour, y = prop_cancelled)) +
+  # set the line to grey
+  geom_line(color = "grey50") + 
+  # set the point size to the sample size
+  geom_point(aes(size = n))
+
+
+# 2.What trigonometric functions does R provide? Guess some names and look 
+#   up the documentation. Do they use degrees or radians?
+  
+# 3. Currently dep_time and sched_dep_time are convenient to look at, but 
+# hard to compute with because they’re not really continuous numbers. You 
+# can see the basic problem by running the code below: there’s a gap 
+# between each hour.
+
+flights |> 
+  filter(month == 1, day == 1) |> 
+  ggplot(aes(x = sched_dep_time, y = dep_delay)) +
+  geom_point()
+
+# Convert them to a more truthful representation of time (either fractional 
+# hours or minutes since midnight).
+
+# 4. Round dep_time and arr_time to the nearest five minutes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
