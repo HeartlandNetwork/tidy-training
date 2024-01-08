@@ -222,6 +222,60 @@ cummin(x)
 cummax(x)
 
 
+# 3.5 General transformations --------------------------------------------------
+
+# 3.5.1 Ranks ------------------------------------------------------------------
+
+x <- c(1, 2, 2, 3, 4, NA)
+min_rank(x)                  # deals with ties
+
+min_rank(desc(x)) # descending
+
+# Other rank-related functions
+
+
+df <- tibble(x = x)
+df |> 
+  mutate(
+    row_number = row_number(x),
+    dense_rank = dense_rank(x),
+    percent_rank = percent_rank(x),
+    cume_dist = cume_dist(x)
+  )
+
+
+# dividing data into equal size groups
+
+df <- tibble(id = 1:10)
+
+df
+
+df |> 
+  mutate(
+    row0 = row_number() - 1,
+    three_groups = row0 %% 3, 
+    three_in_each_group = row0 %/% 3 
+  )
+
+
+# 13.5.2 Offsets ---------------------------------------------------------------
+
+# referring to value before or after "current" value
+
+x <- c(2, 5, 11, 11, 19, 35)
+lag(x)
+
+# the difference between the current and previous value 
+
+x - lag(x)
+
+# when the current value changes 
+
+x
+
+x == lag(x)
+
+# 13.5.3 Consecutive identifiers -----------------------------------------------
 
 
 
