@@ -86,9 +86,40 @@ flights |>
   ggplot(aes(x = sched_dep_time, y = dep_delay)) +
   geom_point()
 
+
 # Convert them to a more truthful representation of time (either fractional 
 # hours or minutes since midnight).
 
+# Converting to number of minutes since midnight...
+
+flights |> 
+  filter(month == 1, day == 1) |> 
+  mutate(
+    departure_delay = dep_delay,
+    hour = sched_dep_time %/% 100,
+    minute = sched_dep_time %% 100,
+    min_past_midnight = ((sched_dep_time %/% 100)* 60) + (sched_dep_time %% 100),
+    .keep = "used"
+  )  |> 
+  ggplot(aes(x = min_past_midnight, y = departure_delay)) +
+  geom_point()
+
+
 # 4. Round dep_time and arr_time to the nearest five minutes.
+
+glimpse(flights)
+
+?round
+
+flights |>
+  select(dep_time, arr_time) |>
+  mutate(
+    rdep_time = round(dep_time, -1),
+    rarr_time = round(arr_time, -1)
+  ) 
+
+
+
+
 
 
