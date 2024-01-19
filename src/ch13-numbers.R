@@ -278,7 +278,39 @@ x == lag(x)
 # 13.5.3 Consecutive identifiers -----------------------------------------------
 
 
+# Handling time as events - e.g., imagine you have the times when someone 
+# visited a website:
 
+events <- tibble(
+  time = c(0, 1, 2, 3, 5, 10, 12, 15, 17, 19, 20, 27, 28, 30)
+)
+
+
+events <- events |> 
+  mutate(
+    diff = time - lag(time, default = first(time)),
+    has_gap = diff >= 5
+  )
+events
+
+# In order to use group_by
+
+events |> mutate(
+  group = cumsum(has_gap)
+)
+
+# Another approach for creating grouping variables is consecutive_id()
+
+df <- tibble(
+  x = c("a", "a", "a", "b", "c", "c", "d", "e", "a", "a", "b", "b"),
+  y = c(1, 2, 3, 2, 4, 1, 3, 9, 4, 8, 10, 199)
+)
+
+df
+
+df |> 
+  group_by(id = consecutive_id(x)) |> 
+  slice_head(n = 1)
 
 
 
