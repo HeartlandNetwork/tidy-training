@@ -207,15 +207,26 @@ flights2 |> select( hour, dep_delay) |>
     mean_delay_increase = mean( delay_increase )
   )
 
-
-  
-
-
-
 # 7. Look at each destination. Can you find flights that are suspiciously 
 # fast (i.e. flights that represent a potential data entry error)? Compute 
 # the air time of a flight relative to the shortest flight to that 
 # destination. Which flights were most delayed in the air?
+
+glimpse(flights)
+
+flights |> select(origin, dest, dep_time, arr_time) |>
+  group_by(origin, dest) |>
+  mutate(
+    air_time = arr_time - dep_time
+  ) |>
+  filter(air_time > 0 & air_time < 15) |>
+  summarize(
+    min(air_time)
+  ) |>
+  print(n = 223)
+
+# flight from Newark to Albuquerque in 42 min is error
+
   
 # 8. Find all destinations that are flown by at least two carriers. Use those 
 # destinations to come up with a relative ranking of the carriers based on 
