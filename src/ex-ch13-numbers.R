@@ -161,22 +161,34 @@ flights |> select(sched_dep_time, dep_delay) |>
 # 4. What does flights |> group_by(dest) |> filter(row_number() < 4) do? What 
 # does flights |> group_by(dest) |> filter(row_number(dep_delay) < 4) do?
 
+# It appears to filter out destinations with more than 3 flights.
 
+f <- flights |> group_by(dest) |> filter(row_number() < 4)
 
+view(f)
 
+# This would filter out those destinations with more than three delayed flights.
 
+f <- flights |> group_by(dest) |> filter(row_number(dep_delay) < 4) |> 
+  select(carrier, flight, origin, dest, dep_delay)
 
-
+view(f)
   
 # 5.For each destination, compute the total minutes of delay. For each flight, 
 # compute the proportion of the total delay for its destination.
+
+flights |> select(dest, dep_delay) |>
+  group_by(dest) |>
+  summarize( total_delay = sum(!is.na(dep_delay))) |>
+  arrange(desc(total_delay))
+
 
 # 6. Delays are typically temporally correlated: even once the problem that 
 # caused the initial delay has been resolved, later flights are delayed to 
 # allow earlier flights to leave. Using lag(), explore how the average flight 
 # delay for an hour is related to the average delay for the previous hour.
 
-flights |> 
+flights2 <- flights |> 
   mutate(hour = dep_time %/% 100) |> 
   group_by(year, month, day, hour) |> 
   summarize(
@@ -185,6 +197,20 @@ flights |>
     .groups = "drop"
   ) |> 
   filter(n > 5)
+
+flights2 |> select( hour, dep_delay) |>
+  mutate(
+    delay_increase = dep_delay - lag(dep_delay)
+  ) |>
+  group_by(hour) |>
+  summarize(
+    mean_delay_increase = mean( delay_increase )
+  )
+
+
+  
+
+
 
 # 7. Look at each destination. Can you find flights that are suspiciously 
 # fast (i.e. flights that represent a potential data entry error)? Compute 
