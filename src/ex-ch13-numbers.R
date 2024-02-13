@@ -223,6 +223,7 @@ flights |> select(origin, dest, dep_time, arr_time) |>
   summarize(
     min(air_time)
   ) |>
+  
   print(n = 223)
 
 # flight from Newark to Albuquerque in 42 min is error
@@ -233,6 +234,17 @@ flights |> select(origin, dest, dep_time, arr_time) |>
 # their performance for the same destination.
 
 
+glimpse(flights)
+
+flights1  <- flights |>
+  select(dest, carrier, dep_delay)
+  group_by(dest, carrier) |>
+  summarize(
+    n = n()
+  )
+
+flights1 |>
+  filter( n > 1)
 
 
 
