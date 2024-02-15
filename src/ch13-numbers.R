@@ -314,15 +314,113 @@ df |>
 
 
 
+# 3.6. Numeric Summaries -------------------------------------------------------
+
+# 13.6.1. Center ----------------------------------------------------------------
+
+# means work well with symmetric distributions. medians are less sensitive to
+# outliers. The following compares meansto median departure delay for each
+# departure destination
+
+flights |>
+  group_by(year, month, day) |>
+  summarize(
+    mean = mean(dep_delay, na.rm = TRUE),
+    median = median(dep_delay, na.rm = TRUE),
+    n = n(),
+    .groups = "drop"
+  ) |> 
+  ggplot(aes(x = mean, y = median)) + 
+  geom_abline(slope = 1, intercept = 0, color = "white", linewidth = 2) +
+  geom_point()
 
 
+# 13.6.2. Minimum, maximum and quartiles ---------------------------------------
+
+# Looking at flight delays, comparing the 95% quantile of delays vs. the maximum
+# delays. The 95% quartile trims off the 5% extreme values.
+
+flights |>
+  group_by(year, month, day) |>
+  summarize(
+    max = max(dep_delay, na.rm = TRUE),
+    q95 = quantile(dep_delay, 0.95, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# 13.6.3. Spread ---------------------------------------------------------------
+# This includes sd() but also a less familiar one called IQR() or inter-quartile 
+# range IQR() which is the quantile(x, 0.75) - quantile(x, 0.25) and gives you 
+# the range that contains the middle 50% of the data.
+
+# the code below reveals a data oddity for airport EGE...
+
+flights |> 
+  group_by(origin, dest) |> 
+  summarize(
+    distance_iqr = IQR(distance), 
+    n = n(),
+    .groups = "drop"
+  ) |> 
+  filter(distance_iqr > 0)
+
+# EGE is Eagle County Regional Airport in Colorado. It is in an extremely 
+# mountainous part of the state with high winds and high elevation, has high 
+# traffic and has just one 9000 ft. runway...
+# You might expect the spread of the distance between origin and destination 
+# to be zero, since airports are always in the same place. Does the distance_iqr
+# at EGE result from having one very long runway? Its 1.7 miles in length.
+
+# 13.6.4 Distributions ---------------------------------------------------------
+
+# looking at skewness in departure delay
+
+flights |> 
+  filter(dep_delay < 200) |>
+  ggplot(aes(dep_delay)) +
+  geom_histogram()
+
+# 365 frequency polygons of dep_delay, one for each day, are overlaid
+
+flights |>
+  filter(dep_delay < 120) |> 
+  ggplot(aes(x = dep_delay, group = interaction(day, month))) + 
+  geom_freqpoly(binwidth = 5, alpha = 1/5)
 
 
+# 13.6.5 Positions -------------------------------------------------------------
 
+# Extracting a value at a specific position: first(x), last(x), and nth(x, n).
+# For example, we can find the first, fifth and last departure for each day
 
+flights |> 
+  group_by(year, month, day) |> 
+  summarize(
+    first_dep = first(dep_time, na_rm = TRUE), 
+    fifth_dep = nth(dep_time, 5, na_rm = TRUE),
+    last_dep = last(dep_time, na_rm = TRUE)
+  ) |>
+  print(n = 365)
 
+# Extracting values at positions is complementary to filtering on ranks. 
+# Filtering gives you all variables, with each observation in a separate 
+# row:
 
+flights |> 
+  group_by(year, month, day) |> 
+  mutate(r = min_rank(sched_dep_time)) |> 
+  filter(r %in% c(1, max(r))) |>
+  view()
 
+# 13.6.6 With mutate() ---------------------------------------------------------
+
+# x / sum(x) calculates the proportion of a total.
+# (x - mean(x)) / sd(x) computes a Z-score (standardized to mean 0 and sd 1).
+# (x - min(x)) / (max(x) - min(x)) standardizes to range [0, 1].
+# x / first(x) computes an index based on the first observation.
+
+# mutate() vs summarize() - mutate creates new columns, while summarize collapses
+# columns to include only the summary.
 
 
 

@@ -234,17 +234,49 @@ flights |> select(origin, dest, dep_time, arr_time) |>
 # their performance for the same destination.
 
 
-glimpse(flights)
+# Destinations that are flown by at least two carriers
 
 flights1  <- flights |>
-  select(dest, carrier, dep_delay)
-  group_by(dest, carrier) |>
+  distinct(dest, carrier) |>
+  group_by(dest) |>
   summarize(
     n = n()
-  )
-
-flights1 |>
+  )|>
   filter( n > 1)
+
+flights1
+
+
+# Relative ranking of the carriers based on their performance for the 
+# same destination
+
+# Just using destinations with carriers with n > 1 
+
+flights2 <- flights1 |>
+  left_join(flights)
+
+
+# Define performance as "being on time". Could use average dep_delay. For each
+# carrier by destination, need to group by carrier and destination
+
+
+flights2 |> 
+  group_by(dest, carrier) |>
+  mutate(
+    delay = mean(dep_delay, na.rm = TRUE),
+  ) |>
+  distinct(dest, carrier, delay) |>
+  arrange(delay) |>
+  print(n = 285)
+
+
+
+
+
+
+
+
+
 
 
 
