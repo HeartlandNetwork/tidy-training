@@ -270,9 +270,25 @@ flights2 |>
   print(n = 285)
 
 
+# 13.6.7 Exercises -------------------------------------------------------------
 
+# 1. Brainstorm at least 5 different ways to assess the typical delay 
+# characteristics of a group of flights. When is mean() useful? When is 
+# median() useful? When might you want to use something else? Should you 
+# use arrival delay or departure delay? Why might you want to use 
+# data from planes?
 
+glimpse(flights)
 
+flights |>
+  group_by
+
+  
+# 2. Which destinations show the greatest variation in air speed?
+  
+# 3. Create a plot to further explore the adventures of EGE. Can you find any 
+# evidence that the airport moved locations? Can you find another variable 
+# that might explain the difference?
 
 
 
