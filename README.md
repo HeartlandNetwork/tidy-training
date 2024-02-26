@@ -1,9 +1,12 @@
 # tidy-training
 
-Code review and worked examples from the following books:
+Code review, worked examples and code experiments inspired by the following books:
 
 Wickham, Hadley, and Garrett Grolemund. 2017. R for Data Science, 1st edition. 
 O'Reilly Media, Inc. Sebastopol, CA USA
+
+Silge, Julia and David Robinson. 2017. Text Mining with R: A Tidy Approach.
+O'Reilly Media, Inc. Sebastopol, CA USA 
 
 Wickham, Hadley, Mine Cetinkaya-Rundel and Garrett Grolemund. 2023. R for 
 Data Science, 2nd edition. O'Reilly Media, Inc. Sebastopol, CA USA

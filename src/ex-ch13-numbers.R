@@ -281,10 +281,27 @@ flights2 |>
 glimpse(flights)
 
 flights |>
-  group_by
+  group_by(flight) |>
+  summarize(
+    dep_mean = mean(dep_delay, na.rm = TRUE),
+    dep_median = median(dep_delay, na.rm = TRUE),
+    dep_maximum = max(dep_delay, na.rm = TRUE),
+    dep_minimum = min(dep_delay, na.rm = TRUE),
+    dep_n = n()
+    
+  ) |>
+  ggplot(aes(x = dep_n)) +
+  geom_histogram(binwidth = 1)
+
+
+dplyr::last_dplyr_warnings()
 
   
 # 2. Which destinations show the greatest variation in air speed?
+
+
+
+
   
 # 3. Create a plot to further explore the adventures of EGE. Can you find any 
 # evidence that the airport moved locations? Can you find another variable 
