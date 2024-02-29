@@ -277,6 +277,14 @@ flights2 |>
 # median() useful? When might you want to use something else? Should you 
 # use arrival delay or departure delay? Why might you want to use 
 # data from planes?
+ 
+# mean() gives you the estimate of the population mean which is sensitive to 
+# outliers. If the data are skewed, the mean will tend towards the skewness of 
+# the data. medium() gives the location of the midpoint of the data. It is less
+# affected by outliers in the data. Departure and arrival delays are necessarily
+# correlated since arrivals are dependent on departure times. You might want
+# to see if individual planes are running late due to characteristics of the plane
+# model type or even the pilots that fly a given plane
 
 glimpse(flights)
 
@@ -299,14 +307,66 @@ dplyr::last_dplyr_warnings()
   
 # 2. Which destinations show the greatest variation in air speed?
 
+# look at min / max and sd to measure variance
+# air speed can be calculated as distance / air_time
+# group by destination and calculate stats
 
+# Tulsa and Oklahoma City showed the greatest variation based
+# on standard deviation
 
+flights |> 
+  select(dest, distance, air_time) |>
+  filter(
+    (!is.na(distance))&(!is.na(air_time))
+    ) |> 
+  mutate(
+    airspeed = (distance / air_time) * 60
+  ) |>
+  group_by(dest) |>
+  summarize(
+    max_airspeed = max(airspeed),
+    min_airspeed = min(airspeed),
+    sd_airspeed = sd(airspeed)
+  ) |>
+  arrange(sd_airspeed) |>
+  print(n = 105)
 
   
 # 3. Create a plot to further explore the adventures of EGE. Can you find any 
 # evidence that the airport moved locations? Can you find another variable 
 # that might explain the difference?
 
+# EGE is regional airport in Eagle County, CO. Its at altitude so the runway
+# is very long. It is seasonally very busy due to ski season in the winter
+# It has a single runway which is over a mile long.
+
+# The airport isn't reported as having moved. 
+
+flights |>
+  filter( dest == 'EGE' ) |>
+  group_by(origin)  |>
+  summarize(
+    max_distance = max(distance),
+    min_distance = min(distance),
+    min_max_diff = max_distance - min_distance
+  ) |>
+  ggplot(aes(x = origin, y = distance)) +
+  geom_point()
+
+flights |>
+  filter( dest == 'EGE' ) |>
+  group_by(origin) |>
+  mutate(
+    max_distance = max(distance),
+    min_distance = min(distance),
+    range_dist = max_distance - min_distance   
+  ) |>
+  ggplot(aes(x = origin, y = range_dist)) + 
+  geom_point()
+
+# The range for EWR and JFK distances are 1 mile each. The fact they aren't
+# zero suggests some kind of error locating EGE. Maybe its related to the 
+# length of the runway.
 
 
 
