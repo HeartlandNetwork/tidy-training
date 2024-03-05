@@ -21,8 +21,33 @@ backslash <- "\\"
 x <- c(single_quote, double_quote, backslash)
 x
 
-
 str_view(x)
+
+# 14.2.2 Raw strings -----------------------------------------------------------
+
+
+tricky <- "double_quote <- \"\\\"\" # or '\''
+single_quote <- '\\'' # or \"'\""
+
+str_view(tricky)
+
+# using a raw string
+
+tricky <- r"(double_quote <- "\"" # or '"' 
+single_quote <- '\'' # or "'")"
+str_view(tricky)
+
+# 14.2.3 Other special characters ----------------------------------------------
+
+# \u or \U for unicode
+
+x <- c("one\ntwo", "one\ttwo", "\u00b5", "\U0001f604")
+x
+str_view(x)
+
+
+
+
 
 
 
