@@ -46,7 +46,39 @@ x
 str_view(x)
 
 
+# 14.3 Creating many strings from data -----------------------------------------
 
+# 14.3.1 str_c() ---------------------------------------------------------------
+
+str_c("x", "y")
+
+str_c("x", "y", "z")
+
+str_c("Hello ", c("John", "Susan"))
+
+
+
+df <- tibble(name = c("Flora", "David", "Terra", NA))
+df
+df |> mutate(greeting = str_c("Hi ", name, "!"))
+
+
+# use coalesce() to replace missing values either inside or outside of str_c()
+
+df |> 
+  mutate(
+    greeting1 = str_c("Hi ", coalesce(name, "you"), "!"),
+    greeting2 = coalesce(str_c("Hi ", name, "!"), "Hi!")
+  )
+
+# 14.3.2 str_glue() ------------------------------------------------------------
+
+df <- tibble(name = c("Flora", "David", "Terra", NA))
+
+df |> mutate(greeting = str_glue("{{Hi {name}!}}"))
+
+
+# 14.3.3 str_flatten() ---------------------------------------------------------
 
 
 
