@@ -5,6 +5,7 @@
 library(tidyverse)
 library(babynames)
 
+
 # 14.2 Creating a string -------------------------------------------------------
 
 string1 <- "This is a string"
