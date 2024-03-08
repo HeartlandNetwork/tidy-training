@@ -39,3 +39,10 @@ my_string2
   # 00a0 is unicode for "No Break Space"
   # It prevents an automatic line break in word processing software
   
+  
+  
+# 14.3.4 Exercises -------------------------------------------------------------
+  
+  
+  
+  

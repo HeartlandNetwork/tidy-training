@@ -10,15 +10,19 @@ library(babynames)
 
 
 string1 <- "This is a string"
+string1
 string2 <- 'If I want to include a "quote" inside a string, I use single quotes'
-
+string2
 
 # 14.2.1 Escapes ---------------------------------------------------------------
 
 double_quote <- "\"" # or '"'
+double_quote 
 single_quote <- '\'' # or "'"
+single_quote
 
 backslash <- "\\"
+backslash
 
 x <- c(single_quote, double_quote, backslash)
 x
@@ -81,6 +85,29 @@ df |> mutate(greeting = str_glue("{{Hi {name}!}}"))
 
 
 # 14.3.3 str_flatten() ---------------------------------------------------------
+
+str_flatten(c("x", "y", "z"))
+
+str_flatten(c("x", "y", "z"), ", ")
+
+str_flatten(c("x", "y", "z"), ", ", last = ", and ")
+
+
+# str_flatten() with summarize()
+
+df <- tribble(
+  ~ name, ~ fruit,
+  "Carmen", "banana",
+  "Carmen", "apple",
+  "Marvin", "nectarine",
+  "Terence", "cantaloupe",
+  "Terence", "papaya",
+  "Terence", "mandarin"
+)
+
+df |>
+  group_by(name) |> 
+  summarize(fruits = str_flatten(fruit, ", "))
 
 
 
