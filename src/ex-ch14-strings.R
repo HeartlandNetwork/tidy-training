@@ -44,5 +44,35 @@ my_string2
 # 14.3.4 Exercises -------------------------------------------------------------
   
   
+# 1 Compare and contrast the results of paste0() with str_c() for the 
+# following inputs:
   
+?paste0()
+
+str_c("hi ", NA)
+paste0("hi ", NA)
+
+letters
+
+str_c(letters[1:2], letters[1:3])
+paste0(letters[1:2], letters[1:3])
+  
+# 2. What’s the difference between paste() and paste0()? How can you recreate 
+# the equivalent of paste() with str_c()?
+
+paste0(1:12)
+paste(1:12, " ")  
+
+# paste() allows you to include characters to separate concatenated values. 
+# paste0() is the same as paste(..., "", colapse)
+
+
+    
+# 3. Convert the following expressions from str_c() to str_glue() or vice versa:
+    
+str_c("The price of ", food, " is ", price)
+  
+str_glue("I'm {age} years old and live in {country}")
+  
+str_c("\\section{", title, "}")
   
