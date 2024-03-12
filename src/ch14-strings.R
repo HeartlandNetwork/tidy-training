@@ -110,5 +110,16 @@ df |>
   summarize(fruits = str_flatten(fruit, ", "))
 
 
+# 14.4 Extracting data from strings --------------------------------------------
+
+# df |> separate_longer_delim(col, delim)
+# df |> separate_longer_position(col, width)
+# df |> separate_wider_delim(col, delim, names)
+# df |> separate_wider_position(col, widths)
+
+
+
+
+
 
 

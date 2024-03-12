@@ -64,15 +64,27 @@ paste0(1:12)
 paste(1:12, " ")  
 
 # paste() allows you to include characters to separate concatenated values. 
-# paste0() is the same as paste(..., "", colapse)
+# paste0() is the same as paste(..., "", collapse)
 
 
     
 # 3. Convert the following expressions from str_c() to str_glue() or vice versa:
+
+food <- c("pepperoni pizza")
+price <- c("$23.00")
+#
     
 str_c("The price of ", food, " is ", price)
+str_glue("The price of {food} is {price} ")
+
+age <- c(64)
+country <- c("the United States")
   
 str_glue("I'm {age} years old and live in {country}")
+str_c("I'm ", age, " years old and live in ", country)
+
+title <- ("R for Data Science, 2nd edition")
   
 str_c("\\section{", title, "}")
+str_glue("\\\\section{{{title}}}")
   
