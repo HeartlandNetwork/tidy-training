@@ -117,6 +117,113 @@ df |>
 # df |> separate_wider_delim(col, delim, names)
 # df |> separate_wider_position(col, widths)
 
+# 14.4.1 Separating into rows --------------------------------------------------
+
+df1 <- tibble(x = c("a,b,c", "d,e", "f"))
+df1 |> 
+  separate_longer_delim(x, delim = ",")
+
+
+df2 <- tibble(x = c("1211", "131", "21"))
+df2 |> 
+  separate_longer_position(x, width = 1)
+
+
+# 14.4.2 Separating into columns -----------------------------------------------
+
+df3 <- tibble(x = c("a10.1.2022", "b10.2.2011", "e15.1.2015"))
+df3 |> 
+  separate_wider_delim(
+    x,
+    delim = ".",
+    names = c("code", "edition", "year")
+  )
+
+
+# omitting a column using NA
+
+df3 |> 
+  separate_wider_delim(
+    x,
+    delim = ".",
+    names = c("code", NA, "year") # note location of NA
+  )
+
+# wider position uses a named vector with widths
+
+df4 <- tibble(x = c("202215TX", "202122LA", "202325CA")) 
+df4 |> 
+  separate_wider_position(
+    x,
+    widths = c(year = 4, age = 2, state = 2)
+  )
+
+# 14.4.3 Diagnosing widening problems ------------------------------------------
+
+
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
+
+# This code throws an error because two of the values were too short
+
+#  df |> 
+#    separate_wider_delim(
+#      x,
+#      delim = "-",
+#       names = c("x", "y", "z"
+#      )
+#   )
+
+# the error message is below the code
+
+#  Error in `separate_wider_delim()`:
+#  ! Expected 3 pieces in each element of `x`.
+#  ! 2 values were too short.
+#  ℹ Use `too_few = "debug"` to diagnose the problem.
+#  ℹ Use `too_few = "align_start"/"align_end"` to silence this message.
+#  Run `rlang::last_trace()` to see where the error occurred.
+
+# Implementing the debug code
+
+debug <- df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_few = "debug"   # <<<<<<<<<<<<<<<<<<<<<
+  )
+debug
+
+df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "drop"
+  )
+#> # A tibble: 5 × 3
+#>   x     y     z    
+#>   <chr> <chr> <chr>
+#> 1 1     1     1    
+#> 2 1     1     2    
+#> 3 1     3     5    
+#> 4 1     3     2    
+#> 5 1     3     5
+
+
+df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "merge"
+  )
+
+
+
+
+
+
+
 
 
 
