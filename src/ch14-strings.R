@@ -161,9 +161,12 @@ df4 |>
 # 14.4.3 Diagnosing widening problems ------------------------------------------
 
 
+# not enough pieces ------------------------------------------------------------
+
+
 df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
 
-# This code throws an error because two of the values were too short
+# The code below throws an error because two of the values were too short
 
 #  df |> 
 #    separate_wider_delim(
@@ -193,21 +196,54 @@ debug <- df |>
   )
 debug
 
+# filter out 'not okay'
+
+debug |> filter(!x_ok)
+
+
+# fill in the missing pieces with NAs 
+
 df |> 
   separate_wider_delim(
     x,
     delim = "-",
     names = c("x", "y", "z"),
-    too_many = "drop"
+    too_few = "align_start"
   )
-#> # A tibble: 5 × 3
-#>   x     y     z    
-#>   <chr> <chr> <chr>
-#> 1 1     1     1    
-#> 2 1     1     2    
-#> 3 1     3     5    
-#> 4 1     3     2    
-#> 5 1     3     5
+
+
+
+# too many pieces --------------------------------------------------------------
+
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
+
+#df |> 
+#  separate_wider_delim(
+#    x,
+#    delim = "-",
+#    names = c("x", "y", "z")
+#  )
+
+# throws error
+
+#Error in `separate_wider_delim()`:
+#  ! Expected 3 pieces in each element of `x`.
+#! 2 values were too long.
+#ℹ Use `too_many = "debug"` to diagnose the problem.
+#ℹ Use `too_many = "drop"/"merge"` to silence this message.
+#Run `rlang::last_trace()` to see where the error occurred.
+
+debug <- df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "debug"
+  )
+
+debug |> filter(!x_ok)
+
+# two options
 
 
 df |> 
@@ -215,8 +251,21 @@ df |>
     x,
     delim = "-",
     names = c("x", "y", "z"),
-    too_many = "merge"
+    too_many = "drop"    # <<<<<<<<<<<<<<<<<<<
   )
+
+
+
+df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "merge"   # <<<<<<<<<<<<<<<<<<<
+  )
+
+
+
 
 
 
