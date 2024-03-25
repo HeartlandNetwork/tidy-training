@@ -110,5 +110,222 @@ df |>
   summarize(fruits = str_flatten(fruit, ", "))
 
 
+# 14.4 Extracting data from strings --------------------------------------------
+
+# df |> separate_longer_delim(col, delim)
+# df |> separate_longer_position(col, width)
+# df |> separate_wider_delim(col, delim, names)
+# df |> separate_wider_position(col, widths)
+
+# 14.4.1 Separating into rows --------------------------------------------------
+
+df1 <- tibble(x = c("a,b,c", "d,e", "f"))
+df1 |> 
+  separate_longer_delim(x, delim = ",")
+
+
+df2 <- tibble(x = c("1211", "131", "21"))
+df2 |> 
+  separate_longer_position(x, width = 1)
+
+
+# 14.4.2 Separating into columns -----------------------------------------------
+
+df3 <- tibble(x = c("a10.1.2022", "b10.2.2011", "e15.1.2015"))
+df3 |> 
+  separate_wider_delim(
+    x,
+    delim = ".",
+    names = c("code", "edition", "year")
+  )
+
+
+# omitting a column using NA
+
+df3 |> 
+  separate_wider_delim(
+    x,
+    delim = ".",
+    names = c("code", NA, "year") # note location of NA
+  )
+
+# wider position uses a named vector with widths
+
+df4 <- tibble(x = c("202215TX", "202122LA", "202325CA")) 
+df4 |> 
+  separate_wider_position(
+    x,
+    widths = c(year = 4, age = 2, state = 2)
+  )
+
+# 14.4.3 Diagnosing widening problems ------------------------------------------
+
+
+# not enough pieces ------------------------------------------------------------
+
+
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
+
+# The code below throws an error because two of the values were too short
+
+#  df |> 
+#    separate_wider_delim(
+#      x,
+#      delim = "-",
+#       names = c("x", "y", "z"
+#      )
+#   )
+
+# the error message is below the code
+
+#  Error in `separate_wider_delim()`:
+#  ! Expected 3 pieces in each element of `x`.
+#  ! 2 values were too short.
+#  ℹ Use `too_few = "debug"` to diagnose the problem.
+#  ℹ Use `too_few = "align_start"/"align_end"` to silence this message.
+#  Run `rlang::last_trace()` to see where the error occurred.
+
+# Implementing the debug code
+
+debug <- df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_few = "debug"   # <<<<<<<<<<<<<<<<<<<<<
+  )
+debug
+
+# filter out 'not okay'
+
+debug |> filter(!x_ok)
+
+
+# fill in the missing pieces with NAs 
+
+df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_few = "align_start"
+  )
+
+
+
+# too many pieces --------------------------------------------------------------
+
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
+
+#df |> 
+#  separate_wider_delim(
+#    x,
+#    delim = "-",
+#    names = c("x", "y", "z")
+#  )
+
+# throws error
+
+#Error in `separate_wider_delim()`:
+#  ! Expected 3 pieces in each element of `x`.
+#! 2 values were too long.
+#ℹ Use `too_many = "debug"` to diagnose the problem.
+#ℹ Use `too_many = "drop"/"merge"` to silence this message.
+#Run `rlang::last_trace()` to see where the error occurred.
+
+debug <- df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "debug"
+  )
+
+debug |> filter(!x_ok)
+
+# two options
+
+
+df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "drop"    # <<<<<<<<<<<<<<<<<<<
+  )
+
+
+
+df |> 
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "merge"   # <<<<<<<<<<<<<<<<<<<
+  )
+
+
+# 14.5 Letters -----------------------------------------------------------------
+
+
+str_length(c("a", "R for data science", NA))
+
+babynames |>
+  count(length = str_length(name), wt = n)
+
+babynames |> 
+  filter(str_length(name) == 15) |> 
+  count(name, wt = n, sort = TRUE)
+
+# 14.5.2 Subsetting
+
+x <- c("Apple", "Banana", "Pear")
+str_sub(x, 1, 3)
+
+# negative values count from the back of the string
+
+str_sub(x, -3, -1)
+
+# too short handles without error
+
+str_sub("a", 1, 5)
+
+
+df <- babynames |> 
+  mutate(
+    first = str_sub(name, 1, 1),
+    last = str_sub(name, -1, -1)
+  )
+
+glimpse(df)
+
+# 14.5.3 Exercises -------------------------------------------------------------
+
+# 1. When computing the distribution of the length of babynames, why did we 
+# use wt = n?
+  
+# 2. Use str_length() and str_sub() to extract the middle letter from each 
+# baby name. What will you do if the string has an even number of characters?
+  
+# 3. Are there any major trends in the length of babynames over time? What 
+#    about the popularity of first and last letters? 14.6 Non-English text?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
