@@ -265,6 +265,56 @@ df |>
   )
 
 
+# 14.5 Letters -----------------------------------------------------------------
+
+
+str_length(c("a", "R for data science", NA))
+
+babynames |>
+  count(length = str_length(name), wt = n)
+
+babynames |> 
+  filter(str_length(name) == 15) |> 
+  count(name, wt = n, sort = TRUE)
+
+# 14.5.2 Subsetting
+
+x <- c("Apple", "Banana", "Pear")
+str_sub(x, 1, 3)
+
+# negative values count from the back of the string
+
+str_sub(x, -3, -1)
+
+# too short handles without error
+
+str_sub("a", 1, 5)
+
+
+df <- babynames |> 
+  mutate(
+    first = str_sub(name, 1, 1),
+    last = str_sub(name, -1, -1)
+  )
+
+glimpse(df)
+
+# 14.5.3 Exercises -------------------------------------------------------------
+
+# 1. When computing the distribution of the length of babynames, why did we 
+# use wt = n?
+  
+# 2. Use str_length() and str_sub() to extract the middle letter from each 
+# baby name. What will you do if the string has an even number of characters?
+  
+# 3. Are there any major trends in the length of babynames over time? What 
+#    about the popularity of first and last letters? 14.6 Non-English text?
+
+
+
+
+
+
 
 
 
