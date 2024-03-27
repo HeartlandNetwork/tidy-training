@@ -299,19 +299,6 @@ df <- babynames |>
 
 glimpse(df)
 
-# 14.5.3 Exercises -------------------------------------------------------------
-
-# 1. When computing the distribution of the length of babynames, why did we 
-# use wt = n?
-  
-# 2. Use str_length() and str_sub() to extract the middle letter from each 
-# baby name. What will you do if the string has an even number of characters?
-  
-# 3. Are there any major trends in the length of babynames over time? What 
-#    about the popularity of first and last letters? 14.6 Non-English text?
-
-
-
 
 
 

@@ -87,4 +87,60 @@ title <- ("R for Data Science, 2nd edition")
   
 str_c("\\section{", title, "}")
 str_glue("\\\\section{{{title}}}")
+
+
+# 14.3.4 Exercises -------------------------------------------------------------
+
+# 1. When computing the distribution of the length of babynames, why did we 
+# use wt = n?
+
+# wt = n was used with the count() function
+# https://dplyr.tidyverse.org/reference/count.html
+
+# from the reference above - wt to perform weighted counts, switching the 
+# summary from n = n() to n = sum(wt).
+
+
+# 2. Use str_length() and str_sub() to extract the middle letter from each 
+# baby name. What will you do if the string has an even number of characters?
+
+# the solution below uses integer division to locate the mid letter
+
+
+babynames |> 
+  mutate(
+    name_length = str_length(name),
+    ml = as.integer(name_length/2) + 1,
+    mid_letter = str_sub(name, ml, ml)
+  )
+
+
+
+# 3. Are there any major trends in the length of babynames over time? What 
+#    about the popularity of first and last letters? 
+
+# The length of baby names increases with time
+
+df <- babynames |> 
+  mutate(
+    name_length = str_length(name),
+    first = str_sub(name, 1, 1),
+    last = str_sub(name, -1, -1)
+  )
+
+rand_df = df[sample(nrow(df), 10000), ]
+
+glimpse(rand_df)
+
+rand_df |>
+  group_by(year) |>
+  summarize(
+    max_name_length = max(name_length, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+
+
+
   
