@@ -127,6 +127,9 @@ df <- babynames |>
     first = str_sub(name, 1, 1),
     last = str_sub(name, -1, -1)
   )
+df
+
+#----------- name_length
 
 rand_df = df[sample(nrow(df), 10000), ]
 
@@ -137,8 +140,36 @@ rand_df |>
   summarize(
     max_name_length = max(name_length, na.rm = TRUE),
     .groups = "drop"
-  )
+  ) |>
+  ggplot(aes(x = year, y = max_name_length)) +
+    geom_line()
 
+# ---------------------- first
+
+period <- function(year){
+  case_when(
+    year < 1900 & year >= 1800 ~ "A",
+    year < 1950 & year >= 1900 ~ "B",
+    year < 2000 & year >= 1950 ~ "C",
+    year >= 2000 ~ "D"
+  )
+}
+
+rand_df <- rand_df |>
+  mutate(
+    period_group = period(year)
+  )
+rand_df
+
+  ggplot(rand_df(aes(x = first, fill = period_group)) + 
+  geom_bar()
+
+
+               
+               
+              
+
+    
 
 
 
