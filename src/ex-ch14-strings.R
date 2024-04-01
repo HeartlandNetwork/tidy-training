@@ -5,6 +5,7 @@
 library(tidyverse)
 library(babynames)
 
+
 # 14.2.4 Exercises -------------------------------------------------------------
 
 # 1. Create strings that contain the following values:
@@ -47,15 +48,10 @@ my_string2
 # 1 Compare and contrast the results of paste0() with str_c() for the 
 # following inputs:
   
-?paste0()
+# ?paste0()
 
 str_c("hi ", NA)
 paste0("hi ", NA)
-
-letters
-
-str_c(letters[1:2], letters[1:3])
-paste0(letters[1:2], letters[1:3])
   
 # 2. What’s the difference between paste() and paste0()? How can you recreate 
 # the equivalent of paste() with str_c()?
@@ -89,7 +85,7 @@ str_c("\\section{", title, "}")
 str_glue("\\\\section{{{title}}}")
 
 
-# 14.3.4 Exercises -------------------------------------------------------------
+# 14.5.3. Exercises -------------------------------------------------------------
 
 # 1. When computing the distribution of the length of babynames, why did we 
 # use wt = n?
@@ -144,13 +140,16 @@ rand_df |>
   ggplot(aes(x = year, y = max_name_length)) +
     geom_line()
 
-# ---------------------- first
+# ------------------------------------------------
+
+# first and last letters trends
+
 
 period <- function(year){
   case_when(
-    year < 1900 & year >= 1800 ~ "A",
-    year < 1950 & year >= 1900 ~ "B",
-    year < 2000 & year >= 1950 ~ "C",
+    year < 1940 & year >= 1800 ~ "A",
+    year < 1980 & year >= 1940 ~ "B",
+    year < 2000 & year >= 1980 ~ "C",
     year >= 2000 ~ "D"
   )
 }
@@ -161,15 +160,30 @@ rand_df <- rand_df |>
   )
 rand_df
 
-  ggplot(rand_df(aes(x = first, fill = period_group)) + 
-  geom_bar()
+df <- rand_df |> 
+  group_by(first) |>
+  summarize(
+    n = n(),
+    propA = sum(period_group == 'A')/n,
+    propB = sum(period_group == 'B')/n,
+    propC = sum(period_group == 'C')/n,
+    propD = sum(period_group == 'D')/n
+  ) |>
+  pivot_longer(
+    cols = starts_with(("prop")),
+    names_to = "time_group",
+    values_to = "group_proportion"
+  )
+
+glimpse(df)
+
+# display this with color blind ggthemes
+
+library(ggtheme)
 
 
-               
-               
-              
-
-    
+ggplot(df, aes(x = first, y = group_proportion, color = time_group)) +  
+  geom_point() 
 
 
 
