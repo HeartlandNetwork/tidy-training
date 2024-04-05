@@ -44,10 +44,83 @@ str_view(fruit, "apple|melon|nut")
 
 # 15.3.1 Detect matches
 
+# str_detect() returns a logical vector 
+
+str_detect(c("a", "b", "c"), "[aeiou]")
+
+#> [1]  TRUE FALSE FALSE
+
+
+
+babynames |> 
+  filter(str_detect(name, "x")) |> # <<<<< string detect inside filter
+  count(name, wt = n, sort = TRUE)
+
+# sum(str_detect(x, pattern)) tells you the number of observations that match 
+# and mean(str_detect(x, pattern)) tells you the proportion that match
+
+babynames |> 
+  group_by(year) |> 
+  summarize(prop_x = mean(str_detect(name, "x"))) |> 
+  ggplot(aes(x = year, y = prop_x)) + 
+  geom_line()
+
+
+# 15.3.2 Count matches ---------------------------------------------------------
+
+x <- c("apple", "banana", "pear")
+str_count(x, "p")
+#> [1] 2 0 1
+
+
+str_count("abababa", "aba")
+#> [1] 2
+str_view("abababa", "aba")
+#> [1] │ <aba>b<aba>
+
+
+babynames |> 
+  count(name) |> 
+  mutate(
+    vowels = str_count(name, "[aeiou]"),
+    consonants = str_count(name, "[^aeiou]")
+  )
+
+
+
+# NOTE: regular expressions are case sensitive
+
+# One solution is to convert all letters to lower case...
+
+
+babynames |> 
+  count(name) |> 
+  mutate(
+    name = str_to_lower(name), # <<<<<<<<<<<<<<<<<<<<<
+    vowels = str_count(name, "[aeiou]"),
+    consonants = str_count(name, "[^aeiou]")
+  )
+
+
+# 15.3.3 Replace values --------------------------------------------------------
+# use with mutate()
+
+x <- c("apple", "pear", "banana")
+str_replace_all(x, "[aeiou]", "-")  # <<< replace
+
+x <- c("apple", "pear", "banana")
+str_remove_all(x, "[aeiou]")        # <<< remove
+
+
+# 15.3.4 Extract variables -----------------------------------------------------
 
 
 
 
-  
-  
+
+
+
+
+
+
 
