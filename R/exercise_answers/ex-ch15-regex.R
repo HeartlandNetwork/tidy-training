@@ -40,9 +40,9 @@ my_string <- c("a/b/c/d/e")
 
 my_string <- str_replace_all(my_string, "//", "\\") 
 
-# This throughs the error below...
+# This throws the error below...
 
-my_string <- str_replace_all(my_string, "\\", "//")
+# my_string <- str_replace_all(my_string, "\\", "//")
 
 # Error in stri_replace_all_regex(string, pattern, fix_replacement(replacement),  : 
 #      Unrecognized backslash escape sequence in pattern. (U_REGEX_BAD_ESCAPE_SEQUENCE, context=`\`)
@@ -50,7 +50,35 @@ my_string <- str_replace_all(my_string, "\\", "//")
 
 #  3. Implement a simple version of str_to_lower() using str_replace_all().
 
+my_string <- c("This is My String")
+
+str_replace_all(my_string, "[A-Z]", tolower)
+
+
 #  4. Create a regular expression that will match telephone numbers as commonly 
 #  written in your country.
+
+# <<<<<<<<<<<<<<< come back to this...
+
+#df <- tribble(
+#  ~str,
+#  "4177322662"
+#  "4173433062"
+#)
+
+  
+#df |> 
+#  separate_wider_regex(
+#    str,
+#    patterns = c(
+#      name = "[A-Za-z]+", 
+##      ">-", 
+ #     gender = ".",
+      "_",
+ #     age = "[0-9]+"
+#    )
+#  )
+
+
 
 
