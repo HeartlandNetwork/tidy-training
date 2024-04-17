@@ -224,10 +224,25 @@ str_replace_all("abc", c("$", "^", "\\b"), "--")
 # 15.4.3 Character classes -----------------------------------------------------
 
 # A character class, or character set, allows you to match any character in a set.
-
 # Note: [^abc] matches any character *except* “a”, “b”, or “c”.
+# - defines a range, e.g., [a-z] matches any lower case letter and [0-9] matches any number.
+# \ escapes special characters, so [\^\-\]] matches ^, -, or ].
+# \d matches any digit;
+# \D matches anything that isn’t a digit.
+# \s matches any whitespace (e.g., space, tab, newline);
+# \S matches anything that isn’t whitespace.
+# \w matches any “word” character, i.e. letters and numbers;
+# \W matches an
 
 x <- "abcd ABCD 12345 -!@#%."
+
+str_view(x, "[abc]+")
+
+str_view(x, "[^a-z0-9]+")
+
+str_view("a-b-c", "[a-c]")
+
+str_view("a-b-c", "[a\\-c]")
 
 
 
