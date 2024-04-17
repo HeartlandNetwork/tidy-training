@@ -143,6 +143,110 @@ df |>
 
 # 15.4 Pattern details ---------------------------------------------------------
 
+# escaping, anchors, character classes, quantifiers, operator precedence and 
+# parentheses, and grouping components of the pattern
+
+
+# 15.4.1 Escaping -------------------------------------------------------------
+
+# To create the regular expression \., we need to use \\.
+dot <- "\\."
+dot
+
+# But the expression itself only contains one \
+str_view(dot)
+
+
+# And this tells R to look for an explicit .
+str_view(c("abc", "a.c", "bef"), "a\\.c")
+
+# more escape examples
+
+x <- "a\\b"
+str_view(x)
+
+str_view(x, "\\\\")
+
+
+# raw strings
+
+str_view(x, r"{\\}")
+
+# an alternative to using a backslash escape: you can use a character
+# class: [.], [$], [|], … all match the literal values.
+
+
+str_view(c("abc", "a.c", "a*c", "a c"), "a[.]c")
+
+
+
+str_view(c("abc", "a.c", "a*c", "a c"), ".[*]c")
+
+
+
+# 15.4.2 Anchors ---------------------------------------------------------------
+
+# ^ to match the start or $ to match the end:
+
+fruit
+
+str_view(fruit, "^a")
+
+str_view(fruit, "a$")
+
+
+
+str_view(fruit, "apple")
+
+str_view(fruit, "^apple$")
+
+
+# boundary between words with \b
+
+x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
+
+x
+
+
+str_view(x, "sum")
+
+str_view(x, "\\bsum\\b")
+
+
+# When used alone, anchors will produce a zero-width match
+
+str_view("abc", c("$", "^", "\\b"))
+
+
+str_replace_all("abc", c("$", "^", "\\b"), "--")
+
+
+# 15.4.3 Character classes -----------------------------------------------------
+
+# A character class, or character set, allows you to match any character in a set.
+
+# Note: [^abc] matches any character *except* “a”, “b”, or “c”.
+
+x <- "abcd ABCD 12345 -!@#%."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
