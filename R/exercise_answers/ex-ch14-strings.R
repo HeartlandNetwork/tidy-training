@@ -188,6 +188,9 @@ glimpse(df)
 # including E, F O, V and W. Others that are more common in the 21st
 # century include A, B, L, x, Y, and Z
 
+# NOTE: there is a much shorter way to code this using regular expressions
+# See Section 15.3.1 Detect matches...
+
 library(ggthemes)
 
 # for last letter
@@ -198,6 +201,8 @@ ggplot(df, aes(x = first, y = group_proportion, color = time_group)) +
 
 # last letter trends ----------------------------------------------------------
 # calculating rel. frequencies of each letter by time period
+# substitue first or last below
+
 df <- rand_df |> 
   group_by(last) |>
   summarize(
@@ -220,6 +225,7 @@ glimpse(df)
 # The letters b, h, j, v and x are really more common in recent years.
 
 library(ggthemes)
+
 
 
 ggplot(df, aes(x = last, y = group_proportion, color = time_group)) +  
