@@ -317,6 +317,27 @@ sentences |>
 # Note - str_match() returns a matrix, so it’s not particularly easy 
 # to work with
 
+sentences |> 
+  str_match("the (\\w+) (\\w+)") |> 
+  head()
+
+# Converting to a tibble
+# separate_wider_regex() uses similar code behind the scenes
+
+sentences |> 
+  str_match("the (\\w+) (\\w+)") |> 
+  as_tibble(.name_repair = "minimal") |> 
+  set_names("match", "word1", "word2")
+
+
+# using parentheses without creating matching groups
+
+x <- c("a gray cat", "a grey dog")
+str_match(x, "gr(e|a)y")
+
+# 15.4.7 Exercises 
+
+
 
 
 
