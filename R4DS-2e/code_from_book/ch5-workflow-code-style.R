@@ -5,9 +5,6 @@
 library(tidyverse)
 library(nycflights13)
 
-library(tidyverse)
-library(nycflights13)
-
 ####################################################
 # Strive for:
 short_flights <- flights |> filter(air_time < 60)

@@ -19,3 +19,7 @@ Elegant Graphics for Data Analysis, 3rd edition.
 
 Wickham, Hadley. Advanced R. 2nd edition. CRC Press: Taylor and Francis Group. 
 Boca Raton, FL USA
+
+# Notes
+
+Need to renumber ch 1 - ch 11 in R4DS2e
