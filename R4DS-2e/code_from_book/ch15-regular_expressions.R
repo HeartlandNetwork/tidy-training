@@ -224,10 +224,139 @@ str_replace_all("abc", c("$", "^", "\\b"), "--")
 # 15.4.3 Character classes -----------------------------------------------------
 
 # A character class, or character set, allows you to match any character in a set.
-
 # Note: [^abc] matches any character *except* “a”, “b”, or “c”.
+# - defines a range, e.g., [a-z] matches any lower case letter and [0-9] matches any number.
+# \ escapes special characters, so [\^\-\]] matches ^, -, or ].
+# \d matches any digit;
+# \D matches anything that isn’t a digit.
+# \s matches any whitespace (e.g., space, tab, newline);
+# \S matches anything that isn’t whitespace.
+# \w matches any “word” character, i.e. letters and numbers;
+# \W matches any “non-word” character.
 
 x <- "abcd ABCD 12345 -!@#%."
+x
+
+str_view(x, "[abc]+")
+
+str_view(x, "[^a-z0-9]+")
+
+# You need an escape to match characters that are otherwise
+# special inside of []
+
+str_view("a-b-c", "[a-c]")
+
+str_view("a-b-c", "[a\\-c]")
+
+# see shortcuts above
+
+x <- "abcd ABCD 12345 -!@#%."
+x
+
+# \d matches any digit;
+str_view(x, "\\d+")
+
+# \D matches anything that isn’t a digit.
+str_view(x, "\\D+")
+
+# \s matches any whitespace (e.g., space, tab, newline);
+str_view(x, "\\s+")
+
+# \S matches anything that isn’t whitespace.
+str_view(x, "\\S+")
+
+# \w matches any “word” character, i.e. letters and numbers;
+str_view(x, "\\w+")
+
+# \W matches any “non-word” character.
+str_view(x, "\\W+")
+
+
+# 15.4.4 Quantifiers -----------------------------------------------------------
+
+# You can also specify the number of matches precisely with {}
+# {n} matches exactly n times.
+# {n,} matches at least n times.
+# {n,m} matches between n and m times.
+
+
+# 15.4.5 Operator precedence and parentheses ----------------------------------
+
+# quantifiers have high precedence and alternation has low precedence which 
+# means that ab+ is equivalent to a(b+), and ^a|b$ is equivalent to (^a)|(b$). 
+# Just like with algebra, you can use parentheses to override the usual order. 
+# But unlike algebra you’re unlikely to remember the precedence rules for 
+# regexes, so feel free to use parentheses liberally.
+
+
+# 15.4.6 Grouping and capturing ------------------------------------------------
+
+#  back reference: \1 refers to the match contained in the first parenthesis, 
+#  \2 in the second parenthesis, and so on
+
+# all fruit that has repeated pairs
+str_view(fruit, "(..)\\1")
+
+# all words that start and end with the same pair of letters
+str_view(words, "^(..).*\\1$")
+
+
+# using back references in str_replace()
+
+
+
+# this code switches the order of the second and third words in sentences
+
+str_view(sentences)
+
+sentences |> 
+  str_replace("(\\w+) (\\w+) (\\w+)", "\\1 \\3 \\2") |> 
+  str_view()
+
+# extracting the matches for each group using str_match(). 
+# Note - str_match() returns a matrix, so it’s not particularly easy 
+# to work with
+
+sentences |> 
+  str_match("the (\\w+) (\\w+)") |> 
+  head()
+
+# Converting to a tibble
+# separate_wider_regex() uses similar code behind the scenes
+
+sentences |> 
+  str_match("the (\\w+) (\\w+)") |> 
+  as_tibble(.name_repair = "minimal") |> 
+  set_names("match", "word1", "word2")
+
+
+# using parentheses without creating matching groups
+
+x <- c("a gray cat", "a grey dog")
+str_match(x, "gr(e|a)y")
+
+# 15.4.7 Exercises 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
