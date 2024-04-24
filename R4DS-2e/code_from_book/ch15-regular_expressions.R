@@ -53,7 +53,7 @@ str_detect(c("a", "b", "c"), "[aeiou]")
 
 
 babynames |> 
-  filter(str_detect(name, "x")) |> # <<<<< string detect inside filter
+  filter(str_detect(name, "x")) |> # <<<<< str_detect inside filter
   count(name, wt = n, sort = TRUE)
 
 # sum(str_detect(x, pattern)) tells you the number of observations that match 
@@ -165,8 +165,8 @@ str_view(c("abc", "a.c", "bef"), "a\\.c")
 x <- "a\\b"
 str_view(x)
 
-str_view(x, "\\\\")
-
+my_string = str_view(x, "\\\\")
+print(my_string)
 
 # raw strings
 
