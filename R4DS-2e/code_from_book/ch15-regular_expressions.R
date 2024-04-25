@@ -335,7 +335,6 @@ sentences |>
 x <- c("a gray cat", "a grey dog")
 str_match(x, "gr(e|a)y")
 
-# 15.4.7 Exercises 
 
 
 
