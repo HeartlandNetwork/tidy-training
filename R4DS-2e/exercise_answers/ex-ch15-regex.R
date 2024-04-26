@@ -56,20 +56,11 @@ str_replace_all(my_string, "[A-Z]", tolower)
 
 
 #  4. Create a regular expression that will match telephone numbers as commonly 
-#  written in your country.
 
-# <<<<<<<<<<<<<<< come back to this...
+tel_no <- c( '(417) 732-2662')
 
+str_view(tel_no, "\\(\\d+\\) [0-9]+\\-[0-9]+")
 
-
-
-
-
-
-
-
-
-)
 
 # 15.4.7 Exercises -------------------------------------------------------------
       
