@@ -64,9 +64,25 @@ str_view(tel_no, "\\(\\d+\\) [0-9]+\\-[0-9]+")
 
 # 15.4.7 Exercises -------------------------------------------------------------
       
-# 1, How would you match the literal string "'\? How about "$^$"?
+# 1, How would you match the literal string "'\" ? How about "$^$"?
+
+ls <- c("\'\\")
+ls
+str_view(ls)
+
+str_view(ls, "")   # <<<<<<<<<< left off here ....
+
+
+str_match(ls, "\'\\")
+
+
+
+
 
 # 2. Explain why each of these patterns don’t match a \: "\", "\\", "\\\".
+
+
+
 
 # 3. Given the corpus of common words in stringr::words, create regular 
 # expressions that find all words that:
@@ -74,7 +90,7 @@ str_view(tel_no, "\\(\\d+\\) [0-9]+\\-[0-9]+")
 #   a. Start with “y”.
 #   b. Don’t start with “y”.
 #   c. End with “x”.
-#   d. Are exactly three letters long. (Don’t cheat by using str_length()!)
+#   d. Are three letters long. (Don’t cheat by using str_length()!)
 #   e. Have seven letters or more.
 #   f. Contain a vowel-consonant pair.
 #   g. Contain at least two vowel-consonant pairs in a row.
