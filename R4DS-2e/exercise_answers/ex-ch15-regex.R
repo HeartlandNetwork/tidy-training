@@ -56,29 +56,97 @@ str_replace_all(my_string, "[A-Z]", tolower)
 
 
 #  4. Create a regular expression that will match telephone numbers as commonly 
-#  written in your country.
 
-# <<<<<<<<<<<<<<< come back to this...
+tel_no <- c( '(417) 732-2662')
 
-#df <- tribble(
-#  ~str,
-#  "4177322662"
-#  "4173433062"
-#)
+str_view(tel_no, "\\(\\d+\\) [0-9]+\\-[0-9]+")
+
+
+# 15.4.7 Exercises -------------------------------------------------------------
+      
+# 1, How would you match the literal string "'\" ? How about "$^$"?
+
+ls <- c("\'\\")
+ls
+str_view(ls)
+
+str_view(ls, "\'\\\\" )   
+
+
+ls2 <- c("$^$")
+ls2
+str_view(ls2)
+
+str_view(ls2, "\\$\\^\\$" )   
+
+
+
+
+# 2. Explain why each of these patterns don’t match a \: "\", "\\", "\\\".
+
+  str_match(ls, "\\")
+
+# \ and \\\ are not valid strings
+# \\ does not pick up "\"
+  
+  # "\\" gives the error - Unrecognized backslash escape sequence in pattern
+
+
+# 3. Given the corpus of common words in stringr::words, create regular 
+# expressions that find all words that:
+  
+  words
+  my_word = c('rex')
+  
+#   a. Start with “y”.
+  
+  words |>
+    str_view("^y")
+  
+#   b. Don’t start with “y”.
+  
+  words |>
+    str_view("^[^y]") |>
+    print( n = 974)
+  
+  
+#   c. End with “x”.
+
+words |>
+ str_view("x$")
 
   
-#df |> 
-#  separate_wider_regex(
-#    str,
-#    patterns = c(
-#      name = "[A-Za-z]+", 
-##      ">-", 
- #     gender = ".",
-      "_",
- #     age = "[0-9]+"
-#    )
-#  )
+#   d. Are three letters long. (Don’t cheat by using str_length()!)
 
 
+
+
+#   e. Have seven letters or more.
+#   f. Contain a vowel-consonant pair.
+#   g. Contain at least two vowel-consonant pairs in a row.
+#   h. Only consist of repeated vowel-consonant pairs.
+
+# 4. Create 11 regular expressions that match the British or American spellings 
+# for each of the following words: airplane/aeroplane, aluminum/aluminium, 
+# analog/analogue, ass/arse, center/centre, defense/defence, donut/doughnut, 
+# gray/grey, modeling/modelling, skeptic/sceptic, summarize/summarise. 
+# Try and make the shortest possible regex!
+
+# 5. Switch the first and last letters in words. Which of those strings are 
+# still words?
+
+# 6. Describe in words what these regular expressions match: (read carefully 
+# to see if each entry is a regular expression or a string that defines a regular expression.)
+
+#   a. ^.*$
+#   b. "\\{.+\\}"
+#   c. \d{4}-\d{2}-\d{2}
+#   d. "\\\\{4}"
+#   e. \..\..\..
+#   f. (.)\1\1
+#   g. "(..)\\1"
+      
+# 7 Solve the beginner regexp crosswords at https://regexcrossword.com/challenges/beginner.
+      
 
 
