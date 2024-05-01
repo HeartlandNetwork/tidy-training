@@ -70,27 +70,57 @@ ls <- c("\'\\")
 ls
 str_view(ls)
 
-str_view(ls, "")   # <<<<<<<<<< left off here ....
+str_view(ls, "\'\\\\" )   
 
 
-str_match(ls, "\'\\")
+ls2 <- c("$^$")
+ls2
+str_view(ls2)
 
+str_view(ls2, "\\$\\^\\$" )   
 
 
 
 
 # 2. Explain why each of these patterns don’t match a \: "\", "\\", "\\\".
 
+  str_match(ls, "\\")
 
+# \ and \\\ are not valid strings
+# \\ does not pick up "\"
+  
+  # "\\" gives the error - Unrecognized backslash escape sequence in pattern
 
 
 # 3. Given the corpus of common words in stringr::words, create regular 
 # expressions that find all words that:
-
+  
+  words
+  my_word = c('rex')
+  
 #   a. Start with “y”.
+  
+  words |>
+    str_view("^y")
+  
 #   b. Don’t start with “y”.
+  
+  words |>
+    str_view("^[^y]") |>
+    print( n = 974)
+  
+  
 #   c. End with “x”.
+
+words |>
+ str_view("x$")
+
+  
 #   d. Are three letters long. (Don’t cheat by using str_length()!)
+
+
+
+
 #   e. Have seven letters or more.
 #   f. Contain a vowel-consonant pair.
 #   g. Contain at least two vowel-consonant pairs in a row.
