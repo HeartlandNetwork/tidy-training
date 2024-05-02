@@ -84,7 +84,7 @@ str_view(ls2, "\\$\\^\\$" )
 
 # 2. Explain why each of these patterns don’t match a \: "\", "\\", "\\\".
 
-  str_match(ls, "\\")
+str_match(ls, "\\")
 
 # \ and \\\ are not valid strings
 # \\ does not pick up "\"
@@ -95,19 +95,17 @@ str_view(ls2, "\\$\\^\\$" )
 # 3. Given the corpus of common words in stringr::words, create regular 
 # expressions that find all words that:
   
-  words
-  my_word = c('rex')
   
 #   a. Start with “y”.
   
-  words |>
-    str_view("^y")
+words |>
+  str_view("^y")
   
 #   b. Don’t start with “y”.
   
-  words |>
-    str_view("^[^y]") |>
-    print( n = 974)
+words |>
+  str_view("^[^y]") |>
+  print( n = 974)
   
   
 #   c. End with “x”.
@@ -118,13 +116,39 @@ words |>
   
 #   d. Are three letters long. (Don’t cheat by using str_length()!)
 
-
+words |> 
+  str_view("^[a-z]{3}\\b") |>
+  print(n = 110)
 
 
 #   e. Have seven letters or more.
+
+words |> 
+  str_view("^[a-z]{7}") 
+
+
 #   f. Contain a vowel-consonant pair.
+
+
+words |>
+  str_view("[aeiou]{1}[^aeiou]{1}")
+
+
 #   g. Contain at least two vowel-consonant pairs in a row.
-#   h. Only consist of repeated vowel-consonant pairs.
+
+words |>
+  str_view("[aeiou]{1}[^aeiou]{1}[aeiou]{1}[^aeiou]{1}")
+
+
+#   h. Only consist of repeated vowel-consonant pairs.   <<<<<<<<<Stopped here
+
+words |>
+  str_view("([aeiou]{1}[^aeiou]{1})\\1$") 
+
+
+str_view(words, "[aeiou]{1}[^aeiou]")
+
+
 
 # 4. Create 11 regular expressions that match the British or American spellings 
 # for each of the following words: airplane/aeroplane, aluminum/aluminium, 
