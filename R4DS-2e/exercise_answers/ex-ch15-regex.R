@@ -156,6 +156,73 @@ str_view(words, "[aeiou]{1}[^aeiou]")
 # gray/grey, modeling/modelling, skeptic/sceptic, summarize/summarise. 
 # Try and make the shortest possible regex!
 
+# airplane/aeroplane
+x <- "airplane"
+str_view(x, "ir")
+x <- "aeroplane"
+str_view(x, "ero")
+
+# aluminum/aluminium
+x <- "aluminum"
+str_view(x, "nu")
+x <- "aluminium"
+str_view(x, "niu")
+
+# analog/analogue
+x <- "analog"
+str_view(x, "g$")
+x <- "analogue"
+str_view(x, "gue$")
+
+# ass/arse
+x <- "ass"
+str_view(x, "s$")
+x <- "arse"
+str_view(x, "e$")
+
+# center/centre
+x <- "center"
+str_view(x, "r$")
+x <- "centre"
+str_view(x, "e$")
+
+# defense/defence
+x <- "defense"
+str_view(x, "se$")
+x <- "defence"
+str_view(x, "ce$")
+
+# donut/doughnut
+x <- "donut"
+str_view(x, "on")
+x <- "doughnut"
+str_view(x, "ou")
+
+# gray/grey
+x <- "gray"
+str_view(x, "ay$")
+x <- "grey"
+str_view(x, "ey$")
+
+# modeling/modelling
+x <- "modeling"
+str_view(x, "eli")
+x <- "modelling"
+str_view(x, "elli")
+
+# skeptic/sceptic
+x <- "skeptic"
+str_view(x, "^sk")
+x <- "sceptic"
+str_view(x, "^sc")
+
+# summarize/summarise
+x <- "summarize"
+str_view(x, "ze$")
+x <- "summarise"
+str_view(x, "se$")
+
+
 # 5. Switch the first and last letters in words. Which of those strings are 
 # still words?
 
