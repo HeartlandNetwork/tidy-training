@@ -84,7 +84,7 @@ str_view(ls2, "\\$\\^\\$" )
 
 # 2. Explain why each of these patterns don’t match a \: "\", "\\", "\\\".
 
-str_match(ls, "\\")
+str_match(ls, "\\\\")
 
 # \ and \\\ are not valid strings
 # \\ does not pick up "\"
@@ -225,6 +225,25 @@ str_view(x, "se$")
 
 # 5. Switch the first and last letters in words. Which of those strings are 
 # still words?
+
+words
+
+str_view(words, "^.")
+str_view(words, ".$")
+str_view(words, "^.|.$") |>
+  print(n = 67)
+
+str_view(words, "\D")
+
+words |>
+  str_replace_all("(\\w+) (\\w+) (\\w+)", "\\1 \\3 \\2") |> 
+
+sentences |> 
+  str_replace("(\\w+) (\\w+) (\\w+)", "\\1 \\3 \\2") |> 
+  str_view()
+
+
+#> [1] "-ppl-"  "p--r"   "b-n-n-"
 
 # 6. Describe in words what these regular expressions match: (read carefully 
 # to see if each entry is a regular expression or a string that defines a regular expression.)
