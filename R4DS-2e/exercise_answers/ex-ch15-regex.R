@@ -236,11 +236,14 @@ str_view(words, "^.|.$") |>
 str_view(words, "\D")
 
 words |>
-  str_replace_all("(\\w+) (\\w+) (\\w+)", "\\1 \\3 \\2") |> 
+  str_view("(a) (b)", "\\2  \\1") 
 
-sentences |> 
-  str_replace("(\\w+) (\\w+) (\\w+)", "\\1 \\3 \\2") |> 
+str_view(words, "^(.).*\\1$")
+
+words |> 
+  str_replace("(.)(e)", "\\1 \\2") |>    # <<<<<<<<<< experiment with this
   str_view()
+
 
 
 #> [1] "-ppl-"  "p--r"   "b-n-n-"
