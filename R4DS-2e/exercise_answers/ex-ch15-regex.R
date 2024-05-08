@@ -228,21 +228,20 @@ str_view(x, "se$")
 
 words
 
-str_view(words, "^.")
-str_view(words, ".$")
-str_view(words, "^.|.$") |>
-  print(n = 67)
-
-str_view(words, "\D")
+words |>
+  str_view("^.") 
 
 words |>
-  str_view("(a) (b)", "\\2  \\1") 
+  str_view(".$") 
 
-str_view(words, "^(.).*\\1$")
+sentences |> 
+  str_replace("(\\w+) (\\w+) (\\w+)", "\\1 \\3 \\2") |> 
+  str_view()
 
 words |> 
-  str_replace("(.)(e)", "\\1 \\2") |>    # <<<<<<<<<< experiment with this
+  str_replace( "(^a)(e$)", "\\2\\1") |> 
   str_view()
+
 
 
 
