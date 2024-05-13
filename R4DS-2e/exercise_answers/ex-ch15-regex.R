@@ -226,6 +226,9 @@ str_view(x, "se$")
 # 5. Switch the first and last letters in words. Which of those strings are 
 # still words?
 
+
+# Come back to this one!!
+
 words
 
 words |>
@@ -243,15 +246,29 @@ words |>
   str_view()
 
 
-
-
 #> [1] "-ppl-"  "p--r"   "b-n-n-"
 
 # 6. Describe in words what these regular expressions match: (read carefully 
 # to see if each entry is a regular expression or a string that defines a regular expression.)
 
-#   a. ^.*$
+#   a. ^.*$  
+
+str_view(words, "^.*$")
+str_view(sentences, "^.*$")
+
+# This appears to define anything. Not sure this is right.
+
+
 #   b. "\\{.+\\}"
+
+x <- "{aa\\\\"
+
+str_view(x , "\\{.+\\}")
+
+
+
+
+
 #   c. \d{4}-\d{2}-\d{2}
 #   d. "\\\\{4}"
 #   e. \..\..\..
