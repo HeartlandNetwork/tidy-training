@@ -2,9 +2,45 @@
 # Ch15 - Regular Expressions
 #===============================================================================
 
+##################################
+
+# regex terminology
+
+  # prerequisites
+    # tidyverse
+    # babynames
+    # stringr char vectors
+      # fruit
+      # words
+      # sentences
+
+  # pattern basics
+    # literal characters
+    # metacharacters
+    # quantifiers
+    # character classes
+      # except
+      # alternation
+
+  # key functions
+    # detect - str_detect()
+    # count - str_count()
+    # replace - str_replace() and str_replace_all()
+    # extract
+      # separate_wider_regex()
+      # sepaparet
+
+
+
+
+
+
 library(tidyverse)
 library(babynames)
 
+glimpse(fruit)
+glimpse(words)
+glimpse(sentences)
 
 # 15.2 Pattern basics ----------------------------------------------------------
 
@@ -13,6 +49,8 @@ str_view(fruit, "berry")
 str_view(c("a", "ab", "ae", "bd", "ea", "eab"), "a.")
 
 str_view(fruit, "a...e")
+
+# Quantifiers
 
 # ? makes a pattern optional (i.e. it matches 0 or 1 times)
 # + lets a pattern repeat (i.e. it matches at least once)
@@ -30,16 +68,20 @@ str_view(c("a", "ab", "abb"), "ab*") # note this is broader than *
 # in DOS or Access queries!!
 
 
-str_view(words, "[aeiou]th[aeiou]")
+# character classes use [] -----------------
+
+str_view(words, "[aeiou]x[aeiou]")
 
 # invert the match by starting with ^
+# this means anything but...
   
-str_view(words, "[^aeiou]oo[^aeiou]")
+str_view(words, "[^aeiou]y[^aeiou]")
 
-# | 
-# to pick between one or more alternative patterns.
+# alternation ---------------------------
 
 str_view(fruit, "apple|melon|nut")
+
+str_view(fruit, "aa|ee|ii|oo|uu")
 
 
 # 15.3 Key functions -----------------------------------------------------------
