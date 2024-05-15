@@ -2,9 +2,51 @@
 # Ch15 - Regular Expressions
 #===============================================================================
 
+##################################
+
+# regex terminology
+
+  # prerequisites
+    # tidyverse
+    # babynames
+    # stringr char vectors
+      # fruit
+      # words
+      # sentences
+
+  # pattern basics
+    # literal characters
+    # metacharacters
+    # quantifiers
+    # character classes
+      # except
+      # alternation
+
+  # key functions
+    # str_detect()
+    # str_count()
+    # str_replace() and str_replace_all()
+    # extract variables
+      # separate_wider_regex()
+      # separate_wider_delim()
+      # separate_wider_position()
+
+  # pattern details
+    # escaping  
+    # anchors
+    
+
+
+
+
+
+
 library(tidyverse)
 library(babynames)
 
+glimpse(fruit)
+glimpse(words)
+glimpse(sentences)
 
 # 15.2 Pattern basics ----------------------------------------------------------
 
@@ -14,9 +56,12 @@ str_view(c("a", "ab", "ae", "bd", "ea", "eab"), "a.")
 
 str_view(fruit, "a...e")
 
+# Quantifiers
+
 # ? makes a pattern optional (i.e. it matches 0 or 1 times)
 # + lets a pattern repeat (i.e. it matches at least once)
-# * lets a pattern be optional or repeat (i.e. it matches any number of times, including 0).
+# * lets a pattern be optional or repeat (i.e. it matches any number of times, 
+# including 0).
 
 # ab? matches an "a", optionally followed by a "b".
 str_view(c("a", "ab", "abb"), "ab?")
@@ -25,19 +70,24 @@ str_view(c("a", "ab", "abb"), "ab?")
 str_view(c("a", "ab", "abb"), "ab+")
 
 # ab* matches an "a", followed by any number of "b"s.
-str_view(c("a", "ab", "abb"), "ab*") # note this is broader than * in DOS or Access queries!!
+str_view(c("a", "ab", "abb"), "ab*") # note this is broader than * 
+# in DOS or Access queries!!
 
 
-str_view(words, "[aeiou]th[aeiou]")
+# character classes use [] -----------------
+
+str_view(words, "[aeiou]x[aeiou]")
 
 # invert the match by starting with ^
+# this means anything but...
   
-str_view(words, "[^aeiou]oo[^aeiou]")
+str_view(words, "[^aeiou]y[^aeiou]")
 
-# | 
-# to pick between one or more alternative patterns.
+# alternation ---------------------------
 
 str_view(fruit, "apple|melon|nut")
+
+str_view(fruit, "aa|ee|ii|oo|uu")
 
 
 # 15.3 Key functions -----------------------------------------------------------
