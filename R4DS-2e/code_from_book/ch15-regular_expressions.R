@@ -23,12 +23,18 @@
       # alternation
 
   # key functions
-    # detect - str_detect()
-    # count - str_count()
-    # replace - str_replace() and str_replace_all()
-    # extract
+    # str_detect()
+    # str_count()
+    # str_replace() and str_replace_all()
+    # extract variables
       # separate_wider_regex()
-      # sepaparet
+      # separate_wider_delim()
+      # separate_wider_position()
+
+  # pattern details
+    # escaping  
+    # anchors
+    
 
 
 
