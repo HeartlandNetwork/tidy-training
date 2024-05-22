@@ -171,6 +171,8 @@ df <- tribble(
   "<Justin>-M_41", 
   "<Patricia>-F_84", 
 )
+df
+
 
 df |> 
   separate_wider_regex(
@@ -190,11 +192,14 @@ df |>
 
 
 # pattern details --------------------------------------------------------------
+
+
 # escaping  
 
 dot <- "\\."
 
 str_view(dot)
+
 
 str_view(c("abc", "a.c", "bef"), "a\\.c")
 
@@ -203,25 +208,74 @@ str_view(x)
 
 str_view(x, "\\\\")
 
-# escaping with raw strings
-
 str_view(x, r"{\\}")
 
-# matching literals without escaping with []
-# for ., $, |, *, +, ?, {, }, (, )
 
 str_view(c("abc", "a.c", "a*c", "a c"), "a[.]c")
 
 str_view(c("abc", "a.c", "a*c", "a c"), ".[*]c")
 
+
+
 # anchors
 
+str_view(fruit, "^a")
+
+str_view(fruit, "a$")
 
 
+str_view(fruit, "apple")
+
+str_view(fruit, "^apple$")
+
+
+x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
+str_view(x, "sum")
+
+str_view(x, "\\bsum\\b")
+
+
+str_view("abc", c("$", "^", "\\b"))
+
+str_replace_all("abc", c("$", "^", "\\b"), "--")
 
 
 
 # character classes or sets
+
+x <- "abcd ABCD 12345 -!@#%."
+
+str_view(x, "[abc]+")
+
+str_view(x, "[a-z]+")
+
+str_view(x, "[^a-z0-9]+")
+
+
+str_view("a-b-c", "[a-c]")
+
+str_view("a-b-c", "[a\\-c]")
+
+
+x <- "abcd ABCD 12345 -!@#%."
+x
+
+str_view(x, "\\d+")
+
+str_view(x, "\\D+")
+
+str_view(x, "\\s+")
+
+str_view(x, "\\S+")
+
+str_view(x, "\\w+")
+
+str_view(x, "\\W+")
+
+
+
+
+
 # quantifiers
 # operator precedence
 # grouping and capturing
