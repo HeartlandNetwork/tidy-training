@@ -273,22 +273,111 @@ str_view(x, "\\w+")
 str_view(x, "\\W+")
 
 
-
-
-
 # quantifiers
-# operator precedence
-# grouping and capturing
-# capturing groups
-# back reference
 
-# pattern control
+# ? - zero or one match
+# + - one or more matches
+# * - zero or more matches
+# {n} matches exactly n times.
+# {n,} matches at least n times.
+# {n,m} matches between n and m times.
+
+# operator precedence
+
+# precedence rules: 
+#  quantifiers have high precedence 
+#  alternation has low precedence 
+#  example:
+#    ab+ is equivalent to a(b+), 
+#   ^a|b$ is equivalent to (^a)|(b$). 
+  
+# In general - use parentheses to override the usual order!!
+
+
+# capturing groups back reference
+
+str_view(fruit, "(..)\\1")
+
+str_view(words, "^(..).*\\1$")
+
+str_view(sentences, "(\\w+) (\\w+) (\\w+)")
+
+sentences |> 
+  str_replace("(\\w+) (\\w+) (\\w+)", "\\1 \\3 \\2") |> 
+  str_view()
+
+
+# pattern control --------------------------------------------------------------
+
 # regex flags
-# flags
+
+bananas <- c("banana", "Banana", "BANANA")
+str_view(bananas, "banana")
+
+str_view(bananas, regex("banana", ignore_case = TRUE))
+
+x <- "Line 1\nLine 2\nLine 3"
+x
+
+str_view(x)
+
+str_view(x, ".Line")
+
+str_view(x, regex(".Line", dotall = TRUE))
+
+
+x <- "Line 1\nLine 2\nLine 3"
+str_view(x, "^Line")
+
+str_view(x, regex("^Line", multiline = TRUE))
+###<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+phone <- regex(
+  r"(
+    \(?     # optional opening parens
+    (\d{3}) # area code
+    [)\-]?  # optional closing parens or dash
+    \ ?     # optional space
+    (\d{3}) # another three numbers
+    [\ -]?  # optional space or dash
+    (\d{4}) # four more numbers
+  )", 
+  comments = TRUE
+)
+
+str_extract(c("514-791-8141", "(123) 456 7890", "123456"), phone)
+#> [1] "514-791-8141"   "(123) 456 7890" NA
+
+
+
+
 # fixed matches
 
+str_view(c("", "a", "."), fixed("."))
+
+
+str_view("x X", "X")
+
+str_view("x X", fixed("X", ignore_case = TRUE))
+
+
+
+str_view("i İ ı I", fixed("İ", ignore_case = TRUE))
+
+str_view("i İ ı I", coll("İ", ignore_case = TRUE, locale = "tr"))
+
+
 # practice
+
 # check your work
+
+str_view(sentences, "^The") |>
+  print(n = 277)
+
+str_view(sentences, "^The\\b")
+
+
+
 # boolean operators
 # creating a pattern with code
 
