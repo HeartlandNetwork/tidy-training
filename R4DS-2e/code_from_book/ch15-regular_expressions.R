@@ -330,7 +330,6 @@ x <- "Line 1\nLine 2\nLine 3"
 str_view(x, "^Line")
 
 str_view(x, regex("^Line", multiline = TRUE))
-###<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 phone <- regex(
   r"(
@@ -346,9 +345,6 @@ phone <- regex(
 )
 
 str_extract(c("514-791-8141", "(123) 456 7890", "123456"), phone)
-#> [1] "514-791-8141"   "(123) 456 7890" NA
-
-
 
 
 # fixed matches
@@ -367,26 +363,84 @@ str_view("i İ ı I", fixed("İ", ignore_case = TRUE))
 str_view("i İ ı I", coll("İ", ignore_case = TRUE, locale = "tr"))
 
 
-# practice
+# practice ---------------------------------------------------------------------
 
 # check your work
 
 str_view(sentences, "^The") |>
   print(n = 277)
-
 str_view(sentences, "^The\\b")
 
+str_view(sentences, "^She|He|It|They\\b")
+str_view(sentences, "^(She|He|It|They)\\b")
 
+pos <- c("He is a boy", "She had a good time")
+neg <- c("Shells come from the sea", "Hadley said 'It's a great day'")
+pattern <- "^(She|He|It|They)\\b"
+
+str_detect(pos, pattern)
+str_detect(neg, pattern)
 
 # boolean operators
+
+str_view(words, "^[^aeiou]+$")
+str_view(words[!str_detect(words, "[aeiou]")])
+
+str_view(words, "a.*b|b.*a")
+
+words[str_detect(words, "a") & str_detect(words, "b")]
+
+words[str_detect(words, "a.*e.*i.*o.*u")]
+words[str_detect(words, "u.*o.*i.*e.*a")]
+
+words[
+  str_detect(words, "a") &
+    str_detect(words, "e") &
+    str_detect(words, "i") &
+    str_detect(words, "o") &
+    str_detect(words, "u")
+]
+
 # creating a pattern with code
 
-# regex expressions in other places 
+str_view(sentences, "\\b(red|green|blue)\\b")
+rgb <- c("red", "green", "blue")
+str_c("\\b(", str_flatten(rgb, "|"), ")\\b")
+
+str_view(colors())
+
+cols <- colors()
+cols <- cols[!str_detect(cols, "\\d")]
+str_view(cols)
+
+pattern <- str_c("\\b(", str_flatten(cols, "|"), ")\\b")
+str_view(sentences, pattern)
+
+
+# regex expressions in other places --------------------------------------------
+
+
 # tidyverse
+
+# matches(pattern) with select(), rename_with() and across()
+
+# pivot_longer()'s names_pattern argument
+# just like separate_wider_regex()
+
 # base R
+
+# apropos(pattern) 
+
+apropos("replace")
+
+# list.files(path, pattern)
+
+head(list.files(pattern = "\\.Rmd$"))
+
 
 # summary
 
+vignette("regular-expressions", package = "stringr")
 
 
 
