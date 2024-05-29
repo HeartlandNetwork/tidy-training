@@ -273,31 +273,174 @@ str_view(x, "\\w+")
 str_view(x, "\\W+")
 
 
-
-
-
 # quantifiers
-# operator precedence
-# grouping and capturing
-# capturing groups
-# back reference
 
-# pattern control
+# ? - zero or one match
+# + - one or more matches
+# * - zero or more matches
+# {n} matches exactly n times.
+# {n,} matches at least n times.
+# {n,m} matches between n and m times.
+
+# operator precedence
+
+# precedence rules: 
+#  quantifiers have high precedence 
+#  alternation has low precedence 
+#  example:
+#    ab+ is equivalent to a(b+), 
+#   ^a|b$ is equivalent to (^a)|(b$). 
+  
+# In general - use parentheses to override the usual order!!
+
+
+# capturing groups back reference
+
+str_view(fruit, "(..)\\1")
+
+str_view(words, "^(..).*\\1$")
+
+str_view(sentences, "(\\w+) (\\w+) (\\w+)")
+
+sentences |> 
+  str_replace("(\\w+) (\\w+) (\\w+)", "\\1 \\3 \\2") |> 
+  str_view()
+
+
+# pattern control --------------------------------------------------------------
+
 # regex flags
-# flags
+
+bananas <- c("banana", "Banana", "BANANA")
+str_view(bananas, "banana")
+
+str_view(bananas, regex("banana", ignore_case = TRUE))
+
+x <- "Line 1\nLine 2\nLine 3"
+x
+
+str_view(x)
+
+str_view(x, ".Line")
+
+str_view(x, regex(".Line", dotall = TRUE))
+
+
+x <- "Line 1\nLine 2\nLine 3"
+str_view(x, "^Line")
+
+str_view(x, regex("^Line", multiline = TRUE))
+
+phone <- regex(
+  r"(
+    \(?     # optional opening parens
+    (\d{3}) # area code
+    [)\-]?  # optional closing parens or dash
+    \ ?     # optional space
+    (\d{3}) # another three numbers
+    [\ -]?  # optional space or dash
+    (\d{4}) # four more numbers
+  )", 
+  comments = TRUE
+)
+
+str_extract(c("514-791-8141", "(123) 456 7890", "123456"), phone)
+
+
 # fixed matches
 
-# practice
+str_view(c("", "a", "."), fixed("."))
+
+
+str_view("x X", "X")
+
+str_view("x X", fixed("X", ignore_case = TRUE))
+
+
+
+str_view("i İ ı I", fixed("İ", ignore_case = TRUE))
+
+str_view("i İ ı I", coll("İ", ignore_case = TRUE, locale = "tr"))
+
+
+# practice ---------------------------------------------------------------------
+
 # check your work
+
+str_view(sentences, "^The") |>
+  print(n = 277)
+str_view(sentences, "^The\\b")
+
+str_view(sentences, "^She|He|It|They\\b")
+str_view(sentences, "^(She|He|It|They)\\b")
+
+pos <- c("He is a boy", "She had a good time")
+neg <- c("Shells come from the sea", "Hadley said 'It's a great day'")
+pattern <- "^(She|He|It|They)\\b"
+
+str_detect(pos, pattern)
+str_detect(neg, pattern)
+
 # boolean operators
+
+str_view(words, "^[^aeiou]+$")
+str_view(words[!str_detect(words, "[aeiou]")])
+
+str_view(words, "a.*b|b.*a")
+
+words[str_detect(words, "a") & str_detect(words, "b")]
+
+words[str_detect(words, "a.*e.*i.*o.*u")]
+words[str_detect(words, "u.*o.*i.*e.*a")]
+
+words[
+  str_detect(words, "a") &
+    str_detect(words, "e") &
+    str_detect(words, "i") &
+    str_detect(words, "o") &
+    str_detect(words, "u")
+]
+
 # creating a pattern with code
 
-# regex expressions in other places 
+str_view(sentences, "\\b(red|green|blue)\\b")
+rgb <- c("red", "green", "blue")
+str_c("\\b(", str_flatten(rgb, "|"), ")\\b")
+
+str_view(colors())
+
+cols <- colors()
+cols <- cols[!str_detect(cols, "\\d")]
+str_view(cols)
+
+pattern <- str_c("\\b(", str_flatten(cols, "|"), ")\\b")
+str_view(sentences, pattern)
+
+
+# regex expressions in other places --------------------------------------------
+
+
 # tidyverse
+
+# matches(pattern) with select(), rename_with() and across()
+
+# pivot_longer()'s names_pattern argument
+# just like separate_wider_regex()
+
 # base R
+
+# apropos(pattern) 
+
+apropos("replace")
+
+# list.files(path, pattern)
+
+head(list.files(pattern = "\\.Rmd$"))
+
 
 # summary
 
+vignette("regular-expressions", package = "stringr")
 
 
 
