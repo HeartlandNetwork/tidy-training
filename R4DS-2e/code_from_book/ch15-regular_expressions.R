@@ -3,7 +3,7 @@
 #===============================================================================
 
 
-# regex terminology -----
+# regex outline -----
 
   # prerequisites
     # tidyverse
@@ -34,7 +34,7 @@
 
   # pattern control
     # regex flags
-      # flags
+    # flags
     # fixed matches
   
   # practice
@@ -106,6 +106,7 @@ str_view(words, "[^aeiou]y[^aeiou]")
 
 
 # alternation
+
 
 str_view(fruit, "apple|melon|nut")
 
