@@ -312,15 +312,69 @@ str_view("2222-33-44", "\\d{4}-\\d{2}-\\d{2}")
 # single regular expression, and a combination of multiple str_detect() calls.
 
 # a. Find all words that start or end with x.
+
+words
+
+# there are no words starting with x
+
+str_view(words, "x$")
+
+
 # b. Find all words that start with a vowel and end with a consonant.
+
+str_view(words, "^[a,e,i,o,u]")
+
+str_view(words, "[^a,e,i,o,u]$")
+
+words[str_detect(words, "a") & str_detect(words, "b")]
+
+words[str_detect(words, "^[a,e,i,o,u]") & str_detect(words, "[^a,e,i,o,u]$")]
+
+
 # c. Are there any words that contain at least one of each different vowel?
+
+# ... no
+
+words[
+      str_detect(words, "a") & 
+      str_detect(words, "e") & 
+        str_detect(words, "i")  &
+        str_detect(words, "o")
+    ]
+
+
+words[
+        str_detect(words, "a") & 
+        str_detect(words, "e") & 
+        str_detect(words, "i") &
+        str_detect(words, "o") &
+        str_detect(words, "u") 
+      ]
+
 
 # 2. Construct patterns to find evidence for and against the rule “i before 
 # e except after c”?
 
+words [
+          str_detect(words, "ei") &
+          words[!str_detect(words, "cei")]
+      ]
+
+shows three exceptions to the rule
+
+words [
+  str_detect(words, "[^cei]") 
+]
+
+words[str_detect(words, "ei") ]
+
+
 # 3. colors() contains a number of modifiers like “lightgray” and “darkblue”. 
 # How could you automatically identify these modifiers? (Think about how 
 # you might detect and then remove the colors that are modified).
+
+
+
 
 # 4. Create a regular expression that finds any base R dataset. You 
 # can get a list of these datasets via a special use of the data() 
