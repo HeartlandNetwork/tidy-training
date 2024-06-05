@@ -355,12 +355,12 @@ words[
 # 2. Construct patterns to find evidence for and against the rule “i before 
 # e except after c”?
 
-words [
-          str_detect(words, "ei") &
-          words[!str_detect(words, "cei")]
-      ]
+#words [
+#          str_detect(words, "ei") &
+#          words[!str_detect(words, "cei")]
+ #     ]
 
-shows three exceptions to the rule
+#shows three exceptions to the rule
 
 words [
   str_detect(words, "[^cei]") 
@@ -373,6 +373,17 @@ words[str_detect(words, "ei") ]
 # How could you automatically identify these modifiers? (Think about how 
 # you might detect and then remove the colors that are modified).
 
+# In color(), modifiers are applied to the following base colors:
+# white, blue, green, gray, pink, red and others. Modifiers typically preceed 
+# the base colors
+
+colornames <- colors()
+
+colornames
+
+colors_with_modifiers <- str_view(colornames, "white|blue|green|gray|pint|red" )
+
+colors_with_modifiers
 
 
 
@@ -381,4 +392,6 @@ words[str_detect(words, "ei") ]
 # function: data(package = "datasets")$results[, "Item"]. Note that a 
 # number of old datasets are individual vectors; these contain the name of 
 # the grouping “data frame” in parentheses, so you’ll need to strip those off.
+
+
 
