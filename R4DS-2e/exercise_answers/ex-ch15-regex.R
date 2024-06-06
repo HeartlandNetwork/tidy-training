@@ -251,31 +251,157 @@ words |>
 # 6. Describe in words what these regular expressions match: (read carefully 
 # to see if each entry is a regular expression or a string that defines a regular expression.)
 
+# Don't really understand this question.  What are we doing here??
 #   a. ^.*$  
 
 str_view(words, "^.*$")
+
+# The above matches words that start with a single letter followed by zero or
+# more different letters all the way to the end of the word
+
 str_view(sentences, "^.*$")
 
-# This appears to define anything. Not sure this is right.
-
+# The above matches any sentence that has a single letter followed by zero or
+# more letters that don't match it.
 
 #   b. "\\{.+\\}"
 
-x <- "{aa\\\\"
+str_view(x, "\\{.+\\}")
 
-str_view(x , "\\{.+\\}")
-
-
+# No idea what this bracket means....
 
 
+#   c. \d{4}-\d{2}-\d{2} 
 
-#   c. \d{4}-\d{2}-\d{2}
+
+
+str_view("2222-33-44", "\\d{4}-\\d{2}-\\d{2}")
+
+# This will be exactly four numbers followed by a - followed by exactly 2 numbers
+# followed by a dash then exactly 2 numbers.
+
+
 #   d. "\\\\{4}"
+
+# This matches \\\\ four times
+
+
 #   e. \..\..\..
+
+# This matches three dots in a row??
+
+
 #   f. (.)\1\1
+
+
 #   g. "(..)\\1"
       
-# 7 Solve the beginner regexp crosswords at https://regexcrossword.com/challenges/beginner.
+# 7. Solve the beginner regexp crosswords at https://regexcrossword.com/challenges/beginner.
       
+# HELP for Beatles
+
+# 
+
+
+
+
+
+# 15.6.4 Exercises -------------------------------------------------------------
+
+# 1. For each of the following challenges, try solving it by using both a 
+# single regular expression, and a combination of multiple str_detect() calls.
+
+# a. Find all words that start or end with x.
+
+words
+
+# there are no words starting with x
+
+str_view(words, "x$")
+
+
+# b. Find all words that start with a vowel and end with a consonant.
+
+str_view(words, "^[a,e,i,o,u]")
+
+str_view(words, "[^a,e,i,o,u]$")
+
+words[str_detect(words, "a") & str_detect(words, "b")]
+
+words[str_detect(words, "^[a,e,i,o,u]") & str_detect(words, "[^a,e,i,o,u]$")]
+
+
+# c. Are there any words that contain at least one of each different vowel?
+
+# ... no
+
+words[
+      str_detect(words, "a") & 
+      str_detect(words, "e") & 
+        str_detect(words, "i")  &
+        str_detect(words, "o")
+    ]
+
+
+words[
+        str_detect(words, "a") & 
+        str_detect(words, "e") & 
+        str_detect(words, "i") &
+        str_detect(words, "o") &
+        str_detect(words, "u") 
+      ]
+
+
+# 2. Construct patterns to find evidence for and against the rule “i before 
+# e except after c”?
+
+#words [
+#          str_detect(words, "ei") &
+#          words[!str_detect(words, "cei")]
+ #     ]
+
+#shows three exceptions to the rule
+
+words [
+  str_detect(words, "[^cei]") 
+]
+
+words[str_detect(words, "ei") ]
+
+
+# 3. colors() contains a number of modifiers like “lightgray” and “darkblue”. 
+# How could you automatically identify these modifiers? (Think about how 
+# you might detect and then remove the colors that are modified).
+
+# In color(), modifiers are applied to the following base colors:
+# white, blue, green, gray, pink, red and others. Modifiers typically preceed 
+# the base colors
+
+colornames <- colors()
+
+colornames
+
+colors_with_modifiers <- str_view(colornames, "white|blue|green|gray|pint|red" )
+
+colors_with_modifiers
+
+
+
+# 4. Create a regular expression that finds any base R dataset. You 
+# can get a list of these datasets via a special use of the data() 
+# function: data(package = "datasets")$results[, "Item"]. Note that a 
+# number of old datasets are individual vectors; these contain the name of 
+# the grouping “data frame” in parentheses, so you’ll need to strip those off.
+
+data()
+
+iris
+
+base_datasets <- data(package = "datasets")$results[, "Item"]
+
+dataset_names <- str_match(base_datasets, "^[A-Za-z]*" ) 
+
+dataset_names
+
 
 
