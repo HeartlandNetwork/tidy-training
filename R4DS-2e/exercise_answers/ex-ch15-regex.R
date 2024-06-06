@@ -393,5 +393,15 @@ colors_with_modifiers
 # number of old datasets are individual vectors; these contain the name of 
 # the grouping “data frame” in parentheses, so you’ll need to strip those off.
 
+data()
+
+iris
+
+base_datasets <- data(package = "datasets")$results[, "Item"]
+
+dataset_names <- str_match(base_datasets, "^[A-Za-z]*" ) 
+
+dataset_names
+
 
 
