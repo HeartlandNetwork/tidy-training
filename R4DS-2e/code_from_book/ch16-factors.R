@@ -16,7 +16,7 @@
     # valid levels
     # factor()
     # forcats::fct()
-      # orders by first appearance:
+    # orders by first appearance:
     # levels()
     # readr::read_csv() 
       # col_factor() option
@@ -155,11 +155,39 @@ rincome_summary <- gss_cat |>
 ggplot(rincome_summary, aes(x = age, y = fct_reorder(rincome, age))) + 
   geom_point()
 
+# fct_relevel()
+
+ggplot(rincome_summary, aes(x = age, y = fct_relevel(rincome, "Not applicable"))) +
+  geom_point()
 
 # fct_reorder2()
-# fct_relevel()
+
+by_age <- gss_cat |>
+  filter(!is.na(age)) |> 
+  count(age, marital) |>
+  group_by(age) |>
+  mutate(
+    prop = n / sum(n)
+  )
+
+ggplot(by_age, aes(x = age, y = prop, color = marital)) +
+  geom_line(linewidth = 1) + 
+  scale_color_brewer(palette = "Set1")
+
+ggplot(by_age, aes(x = age, y = prop, color = fct_reorder2(marital, age, prop))) +
+  geom_line(linewidth = 1) +
+  scale_color_brewer(palette = "Set1") + 
+  labs(color = "marital") 
+
 # fct_infreq()
+
 # fcr_rev()
+
+
+gss_cat |>
+  mutate(marital = marital |> fct_infreq() |> fct_rev()) |>
+  ggplot(aes(x = marital)) +
+  geom_bar()
 
 
 
