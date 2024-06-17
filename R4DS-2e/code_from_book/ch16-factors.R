@@ -189,7 +189,87 @@ gss_cat |>
   ggplot(aes(x = marital)) +
   geom_bar()
 
+# Modifying factor levels ------------------------------------------------------
+# fct_recode()
 
+gss_cat |> count(partyid)
+
+gss_cat |>
+  mutate(
+    partyid = fct_recode(partyid,
+                         "Republican, strong"    = "Strong republican",
+                         "Republican, weak"      = "Not str republican",
+                         "Independent, near rep" = "Ind,near rep",
+                         "Independent, near dem" = "Ind,near dem",
+                         "Democrat, weak"        = "Not str democrat",
+                         "Democrat, strong"      = "Strong democrat"
+    )
+  ) |>
+  count(partyid)
+
+gss_cat |>
+  mutate(
+    partyid = fct_recode(partyid,
+                         "Republican, strong"    = "Strong republican",
+                         "Republican, weak"      = "Not str republican",
+                         "Independent, near rep" = "Ind,near rep",
+                         "Independent, near dem" = "Ind,near dem",
+                         "Democrat, weak"        = "Not str democrat",
+                         "Democrat, strong"      = "Strong democrat",
+                         "Other"                 = "No answer",
+                         "Other"                 = "Don't know",
+                         "Other"                 = "Other party"
+    )
+  )
+
+
+# fct_collapse()  
+
+gss_cat |>
+  mutate(
+    partyid = fct_collapse(partyid,
+                           "other" = c("No answer", "Don't know", "Other party"),
+                           "rep" = c("Strong republican", "Not str republican"),
+                           "ind" = c("Ind,near rep", "Independent", "Ind,near dem"),
+                           "dem" = c("Not str democrat", "Strong democrat")
+    )
+  ) |>
+  count(partyid)
+
+
+# fct_lump_* family of functions
+
+
+gss_cat |>
+  mutate(relig = fct_lump_lowfreq(relig)) |>
+  count(relig)
+
+
+# fct_lump_n()
+
+
+gss_cat |>
+  mutate(relig = fct_lump_n(relig, n = 10)) |>
+  count(relig, sort = TRUE)
+
+
+# Ordered factors ------------------------------------------------------------
+# ordered()
+
+ordered(c("a", "b", "c"))
+
+
+# Summary --------------------------------------------------------------------
+# Function reference in forcats
+
+https://forcats.tidyverse.org/reference/index.html
+
+
+# Wrangling categorical data in R
+
+https://peerj.com/preprints/3163/
+  
+  
 
 
 

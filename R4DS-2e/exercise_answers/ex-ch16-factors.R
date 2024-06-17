@@ -1,7 +1,12 @@
 
 
+
+
 # Ch16 - Factors
 #===============================================================================
+
+
+library(tidyverse)
 
 # 16.3.1 Exercises
 
@@ -30,6 +35,11 @@ ggplot(gss_cat, aes(x = fct_infreq(relig))) +
   geom_bar()
 
 # partyid
+
+ggplot(gss_cat, aes(x = fct_infreq(partyid))) +
+  geom_bar()
   
 # Which relig does denom (denomination) apply to? How can you find out with a 
 # table? How can you find out with a visualization?
+
+
