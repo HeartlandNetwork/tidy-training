@@ -42,4 +42,18 @@ ggplot(gss_cat, aes(x = fct_infreq(partyid))) +
 # Which relig does denom (denomination) apply to? How can you find out with a 
 # table? How can you find out with a visualization?
 
+glimpse(gss_cat)
+
+# Denomination only applies to Protestant 
+
+df <- gss_cat |>
+  group_by(relig, denom) |>
+  count() |>
+  print( n = 47)
+  
+df
+
+ggplot(df, aes(x = relig, y = denom)) +
+  geom_point()
+
 

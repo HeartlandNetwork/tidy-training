@@ -262,12 +262,12 @@ ordered(c("a", "b", "c"))
 # Summary --------------------------------------------------------------------
 # Function reference in forcats
 
-https://forcats.tidyverse.org/reference/index.html
+#https://forcats.tidyverse.org/reference/index.html
 
 
 # Wrangling categorical data in R
 
-https://peerj.com/preprints/3163/
+#https://peerj.com/preprints/3163/
   
   
 
