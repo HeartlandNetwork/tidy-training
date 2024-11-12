@@ -64,225 +64,60 @@ library(tidyverse)
 # factor basics --------------------------------------------------------------
 
 x1 <- c("Dec", "Apr", "Jan", "Mar")
+
 x1
 
 x2 <- c("Dec", "Apr", "Jam", "Mar") # NOTE: typo for Jan
+
 x2
 
-sort(x1)
+sort(x1)  # this sort order is not useful, so use catagories
+
+# need levels to control order
 
 month_levels <- c(
   "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 )
+
 month_levels
+
+# use factor() to create levels
+
 y1 <- factor(x1, levels = month_levels)
+
 y1
 
+# now when you sort y1, you get the correct order
+
+sort(y1)  # unused levels are silect NAs
+
+# note the typo for Jan is Jam
+
 y2 <- factor(x2, levels = month_levels)
-y2
 
-# forcats::fct()
+y2  # note the NA for "Jam"
 
-# y2 <- fct(x2, levels = month_levels)
-#Error in `fct()`:
-#  ! All values of `x` must appear in `levels` or `na`
-# ℹ Missing level: "Jam"
-# Run `rlang::last_trace()` to see where the error occurred.
+sort(y2)
+
+# The mismatch silenty drops out
+# Get better error messages using forcats::fct()
+
+y2 <- fct(x2, levels = month_levels)
+
+# Throws exception because all values of x2 must
+# match the levels
+
+# using factors without levels...
+# just get alphabetical order, which may be computer dependent
 
 factor(x1)
 
-fct(x1) # sort by order of appearance
+# so forcats always lists in order of appearance
 
-levels(y2)
+fct(x1)
 
-csv <- "
-month,value
-Jan,12
-Feb,56
-Mar,12"
-
-df <- read_csv(csv, col_types = cols(month = col_factor(month_levels)))
-df
-df$month
-
-# General Social Survey ------------------------------------------------------
-# NORC (Natl Opinion Research Center) University of Chicago
-# gss_cat - small data subset
-
-?gss_cat
-
-gss_cat
-
-glimpse(gss_cat)
-
-gss_cat |>
-  count(race)
-
-
-
-# Modifying factor order -------------------------------------------------------
-
-relig_summary <- gss_cat |>
-  group_by(relig) |>
-  summarize(
-    tvhours = mean(tvhours, na.rm = TRUE),
-    n = n()
-  )
-
-ggplot(relig_summary, aes(x = tvhours, y = relig)) + 
-  geom_point()
-
-# fct_reorder()
-
-ggplot(relig_summary, aes(x = tvhours, y = fct_reorder(relig, tvhours))) +
-  geom_point()
-
-relig_summary |>
-  mutate(
-    relig = fct_reorder(relig, tvhours)
-  ) |>
-  ggplot(aes(x = tvhours, y = relig)) +
-  geom_point()
-
-rincome_summary <- gss_cat |>
-  group_by(rincome) |>
-  summarize(
-    age = mean(age, na.rm = TRUE),
-    n = n()
-  )
-
-ggplot(rincome_summary, aes(x = age, y = fct_reorder(rincome, age))) + 
-  geom_point()
-
-# fct_relevel()
-
-ggplot(rincome_summary, aes(x = age, y = fct_relevel(rincome, "Not applicable"))) +
-  geom_point()
-
-# fct_reorder2()
-
-by_age <- gss_cat |>
-  filter(!is.na(age)) |> 
-  count(age, marital) |>
-  group_by(age) |>
-  mutate(
-    prop = n / sum(n)
-  )
-
-ggplot(by_age, aes(x = age, y = prop, color = marital)) +
-  geom_line(linewidth = 1) + 
-  scale_color_brewer(palette = "Set1")
-
-ggplot(by_age, aes(x = age, y = prop, color = fct_reorder2(marital, age, prop))) +
-  geom_line(linewidth = 1) +
-  scale_color_brewer(palette = "Set1") + 
-  labs(color = "marital") 
-
-# fct_infreq()
-
-# fcr_rev()
-
-
-gss_cat |>
-  mutate(marital = marital |> fct_infreq() |> fct_rev()) |>
-  ggplot(aes(x = marital)) +
-  geom_bar()
-
-# Modifying factor levels ------------------------------------------------------
-# fct_recode()
-
-gss_cat |> count(partyid)
-
-gss_cat |>
-  mutate(
-    partyid = fct_recode(partyid,
-                         "Republican, strong"    = "Strong republican",
-                         "Republican, weak"      = "Not str republican",
-                         "Independent, near rep" = "Ind,near rep",
-                         "Independent, near dem" = "Ind,near dem",
-                         "Democrat, weak"        = "Not str democrat",
-                         "Democrat, strong"      = "Strong democrat"
-    )
-  ) |>
-  count(partyid)
-
-gss_cat |>
-  mutate(
-    partyid = fct_recode(partyid,
-                         "Republican, strong"    = "Strong republican",
-                         "Republican, weak"      = "Not str republican",
-                         "Independent, near rep" = "Ind,near rep",
-                         "Independent, near dem" = "Ind,near dem",
-                         "Democrat, weak"        = "Not str democrat",
-                         "Democrat, strong"      = "Strong democrat",
-                         "Other"                 = "No answer",
-                         "Other"                 = "Don't know",
-                         "Other"                 = "Other party"
-    )
-  )
-
-
-# fct_collapse()  
-
-gss_cat |>
-  mutate(
-    partyid = fct_collapse(partyid,
-                           "other" = c("No answer", "Don't know", "Other party"),
-                           "rep" = c("Strong republican", "Not str republican"),
-                           "ind" = c("Ind,near rep", "Independent", "Ind,near dem"),
-                           "dem" = c("Not str democrat", "Strong democrat")
-    )
-  ) |>
-  count(partyid)
-
-
-# fct_lump_* family of functions
-
-
-gss_cat |>
-  mutate(relig = fct_lump_lowfreq(relig)) |>
-  count(relig)
-
-
-# fct_lump_n()
-
-
-gss_cat |>
-  mutate(relig = fct_lump_n(relig, n = 10)) |>
-  count(relig, sort = TRUE)
-
-
-# Ordered factors ------------------------------------------------------------
-# ordered()
-
-ordered(c("a", "b", "c"))
-
-
-# Summary --------------------------------------------------------------------
-# Function reference in forcats
-
-#https://forcats.tidyverse.org/reference/index.html
-
-
-# Wrangling categorical data in R
-
-#https://peerj.com/preprints/3163/
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
+#
 
 
 
