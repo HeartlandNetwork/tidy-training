@@ -8,9 +8,9 @@
 
 library(tidyverse)
 
-# 16.3.1 Exercises
+# 16.3.1 Exercises -------------------------------------------------------------
 
-# Explore the distribution of rincome (reported income). What makes the default 
+# 1. Explore the distribution of rincome (reported income). What makes the default 
 # bar chart hard to understand? How could you improve the plot?
 
 # bar chart of rincome is hard to read since the value of the bars is
@@ -25,7 +25,7 @@ ggplot(gss_cat, aes(x = fct_infreq(rincome))) +
   geom_bar()
 
 
-# What is the most common relig in this survey? What’s the most common partyid?
+# 2. What is the most common relig in this survey? What’s the most common partyid?
 
 glimpse(gss_cat)
 
@@ -39,7 +39,71 @@ ggplot(gss_cat, aes(x = fct_infreq(relig))) +
 ggplot(gss_cat, aes(x = fct_infreq(partyid))) +
   geom_bar()
   
-# Which relig does denom (denomination) apply to? How can you find out with a 
+# 3. Which relig does denom (denomination) apply to? How can you find out with a 
 # table? How can you find out with a visualization?
 
+glimpse(gss_cat)
 
+# Denomination only applies to Protestant 
+
+df <- gss_cat |>
+  group_by(relig, denom) |>
+  count() |>
+  print( n = 47)
+  
+df
+
+ggplot(df, aes(x = relig, y = denom)) +
+  geom_point()
+
+
+# 16.4.1 Exercises -------------------------------------------------------------
+# 1. There are some suspiciously high numbers in tvhours. Is the mean a 
+# good summary?
+
+# the mean is not a good summary because the distribution is skewed towards 
+# very high values
+
+glimpse(gss_cat)
+
+ggplot(gss_cat, aes(x = tvhours)) +
+  geom_histogram(binwidth = 0.5)
+
+log_tvhours <- log10(tvhours)
+
+ggplot(gss_cat, aes(x = log_tvhours)) +
+  geom_histogram(binwidth = 0.5)
+
+
+  
+# 2. For each factor in gss_cat identify whether the order of the levels is 
+# arbitrary or principled.
+
+# 3. Why did moving “Not applicable” to the front of the levels move it to the 
+# bottom of the plot?
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
