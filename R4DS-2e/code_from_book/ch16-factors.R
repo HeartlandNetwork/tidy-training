@@ -255,21 +255,6 @@ gss_cat |>
   ggplot(aes(x = marital)) +
   geom_bar()
   
-  
-
-  
-
-
-
- 
-  
-  
- 
-
-  
-  
-
-
 
 
   # Modifying factor levels ----------------------------------------------------
