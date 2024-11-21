@@ -2,67 +2,9 @@
 ## Ch16 - Factors
 #===============================================================================
 
-# Factors - outline
-
-  # introduction----------------------------------------------------------------
-    # factor()
-    # gss_cat data 
-
-    # prerequisites
-      # base R
-      # forcats in tidyverse
-  
-  # factor basics --------------------------------------------------------------
-    # valid levels
-    # factor()
-    # forcats::fct()
-    # orders by first appearance:
-    # levels()
-    # readr::read_csv() 
-      # col_factor() option
-    
-  # General Social Survey ------------------------------------------------------
-    # NORC (Natl Opinion Research Center) University of Chicago
-    # gss_cat - small data subset
-
-  # Modifying factor order -----------------------------------------------------
-    # fct_reorder()
-    # fct_reorder2()
-    # fct_relevel()
-    # fct_infreq()
-    # fcr_rev()
-
-  # Modifying factor levels ----------------------------------------------------
-    # fct_recode()
-    # fct_collapse()  
-    # fct_lump_* family of functions
-    # fct_lump_n()
-
-  # Ordered factors ------------------------------------------------------------
-    # ordered()
-    
-  # Summary --------------------------------------------------------------------
-    # Function reference in forcats
-    # Wrangling categorical data in R
-
-
-
-
-
-# introduction----------------------------------------------------------------
-# factor()
-# gss_cat data 
-
-# prerequisites
-# base R
-# forcats in tidyverse
-
-
 library(tidyverse)
 
 ?forcats
-
-
 
 # factor basics --------------------------------------------------------------
 
@@ -256,19 +198,95 @@ gss_cat |>
   geom_bar()
   
 
+# Modifying factor levels ----------------------------------------------------
+  
+# fct_recode()
 
-  # Modifying factor levels ----------------------------------------------------
-    # fct_recode()
-    # fct_collapse()  
-    # fct_lump_* family of functions
-    # fct_lump_n()
+glimpse(gss_cat)
 
-  # Ordered factors ------------------------------------------------------------
-    # ordered()
-    
-  # Summary --------------------------------------------------------------------
-    # Function reference in forcats
-    # Wrangling categorical data in R
+gss_cat |> count(partyid)
+
+# recoding the values for clarity -- new values are on the left
+
+gss_cat |>
+  mutate(
+    partyid = fct_recode(partyid,
+	  "Republican, strong" = "Strong republican",
+	  "Republican, weak" = "Not str republican",
+	  "Independent, near rep" = "Ind,near rep",
+	  "Independent, near dem" = "Ind,near rep",
+	  "Democrat, weak" = "Not str democrat",
+	  "Democrat, strong" = "Strong democrat"
+	)
+  ) |>
+count(partyid)
+  
+  
+# Combining groups with same value, e.g., other
+
+
+gss_cat |>
+  mutate(
+    partyid = fct_recode(partyid,
+	  "Republican, strong" = "Strong republican",
+	  "Republican, weak" = "Not str republican",
+	  "Independent, near rep" = "Ind,near rep",
+	  "Independent, near dem" = "Ind,near rep",
+	  "Democrat, weak" = "Not str democrat",
+	  "Democrat, strong" = "Strong democrat",
+	  "Other" = "No answer",
+	  "Other" =  "Don't know",
+	  "Other" = "Other party"	  
+	)
+  ) |>
+count(partyid)
+
+# Use fct_collapse to create variable from vector of old levels
+
+gss_cat |>
+  mutate(
+    partyid  = fct_collapse(partyid,
+    "other" = c("No answer", "Don't know", "Other party"),
+	"rep" = c("Strong republican", "Not str republican"),
+	"ind" = c("Ind,near rep", "Independent", "Ind,near dem"),
+	"dem" = c("Not str democrat", "Strong democrat")
+	)
+  ) |>
+count(partyid)
+
+# lumping together small groups using fct_lump_*
+# for example fct_lump_lowfreq
+# lumping ove4r low frequencies
+
+gss_cat |>
+  mutate(relig = fct_lump_lowfreq(relig)) |>
+  count(relig)
+  
+# maybe more helpful...
+# fct_lump_n()
+
+gss_cat |>
+  mutate(relig = fct_lump_n(relig, n = 10)) |>
+  count(relig, sort = TRUE)
+  
+  
+# Others fct_lump_min(), fct_lump_prop()
+
+
+# Ordered factors ------------------------------------------------------------
+
+# Ordered factors are created using order() 
+# not clear how useful these will be...
+
+ordered(c("a", "b", "c"))
+
+# example scale_color_viridis()/scale_fill_viridis()
+# color scale implies ranking
+
+
+# Summary --------------------------------------------------------------------
+# Function reference in forcats
+# Wrangling categorical data in R
 
 
 
