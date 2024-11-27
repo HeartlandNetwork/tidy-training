@@ -17,10 +17,10 @@ today()
 now()
 
 # Besides the above, 4 ways to create date / time
-  # read from file - readr
-  # From a String
-  # From date / time components
-  # From existing date - time components
+  # (1) read from file - readr
+  # (2) From a String
+  # (3) From date / time components
+  # (4) From existing date - time components
 
 # During Import
 
@@ -51,24 +51,69 @@ read_csv(csv)
 # Time zone - %Z, %z,
 # skipping non-digits - %., %*
 
-csv <- "date 01/02/15"
+
+# Using readr read_csv()
+
+
+csv <- "
+  date 
+  01/02/15
+"
 
 csv
 
-read_csv
+read_csv(csv, col_types = cols(date = col_date("%m/%d/%y")))
 
+read_csv(csv, col_types = cols(date = col_date("%d/%m/%y")))
 
-
-
-
+read_csv(csv, col_types = cols(date = col_date("%y/%m/%d")))
 
 
 
 # From Strings
 
+# using lubridate's helper functions - attempt to automatically determine formats
+
+# these ones use dates
+
+ymd("2017-01-31")
+
+mdy("January 31st, 2017")
+
+dmy("31-Jan-2017")
+
+# these ones use date/times 
+
+ymd_hms("2017-01-31 20:11:59")
+
+mdy_hm("01/31/2017 08:01")
+
+# Using UTC timezones
+
+ymd("2017-01-31", tz = "UTC")
+
 
 
 # From Individual Components
+
+# Use-case - where you have individual components spread over multiple columns
+# using make_datetime()
+
+flights |>
+  select(year, month, day, hour, minute)
+  
+
+flights |>
+  select(year, month, day, hour, minute) |>
+  mutate(
+    departure = make_datetime(year, month, day, hour, minute))
+	
+
+
+  
+  
+
+  
 
 
 # From Other Types
